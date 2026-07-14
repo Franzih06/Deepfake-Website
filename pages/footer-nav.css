@@ -1,0 +1,107 @@
+/* Gemeinsame Footer-Navigation (Instagram, KI, …) */
+
+.layer--footer {
+  left: 0;
+  width: calc(var(--canvas-w, 1440) * 1px);
+  top: var(--footer-top);
+  z-index: var(--footer-z, 4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 72px;
+  transform: none;
+  will-change: transform;
+
+  --footer-btn-scale: 0.7;
+  --footer-nav-height:     112px;
+  --footer-nav-label-size: 50px;
+  --footer-nav-inner-gap:  36px;
+  --footer-nav-arrow-size: 38px;
+}
+
+.layer--footer[data-footer-static] {
+  will-change: auto;
+}
+
+.layer--footer .fbtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  align-self: center;
+  max-width: calc(100% - 48px);
+  height: var(--footer-nav-height);
+  text-decoration: none;
+  transition: filter 0.18s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layer--footer .fbtn--instagram { width: calc(598px * var(--footer-btn-scale)); }
+.layer--footer .fbtn--tiktok     { width: calc(526px * var(--footer-btn-scale)); }
+.layer--footer .fbtn--tinder     { width: calc(479px * var(--footer-btn-scale)); }
+.layer--footer .fbtn--ki        { width: calc(1041px * var(--footer-btn-scale)); }
+
+.layer--footer .fbtn:hover,
+.layer--footer .fbtn:focus-visible {
+  filter: brightness(1.06);
+  z-index: 2;
+}
+
+.layer--footer .fbtn__bg,
+.layer--footer .fbtn__glitch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.layer--footer .fbtn--ki .fbtn__bg path { fill: #F7730D; }
+
+.layer--footer .fbtn__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--footer-nav-inner-gap);
+  padding: 0 24px;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.layer--footer .fbtn__label {
+  font-family: var(--font-body);
+  font-size: var(--footer-nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.layer--footer .fbtn__arrow {
+  width:  var(--footer-nav-arrow-size);
+  height: var(--footer-nav-arrow-size);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.layer--footer .fbtn__arrow--light { filter: invert(1); }
+
+.layer--footer .fbtn--tiktok .fbtn__glitch--cyan { transform: translate(-8.4px, -7px); }
+.layer--footer .fbtn--tiktok .fbtn__glitch--red  { transform: translate(5.6px, 7.7px); }
+.layer--footer .fbtn--tiktok .fbtn__bg--rect     { z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .layer--footer .fbtn {
+    transition: none;
+  }
+
+  .layer--footer .fbtn:hover,
+  .layer--footer .fbtn:focus-visible {
+    filter: none;
+  }
+}

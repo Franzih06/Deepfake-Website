@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deepfake – KI Bilder und Deepfake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="page-scale.css?v=20260710cb">
+  <link rel="stylesheet" href="section-transition.css?v=20260707a">
+  <link rel="stylesheet" href="footer-nav.css?v=20260710bv">
+  <link rel="stylesheet" href="ki.css?v=20260710cb">
+  <link rel="stylesheet" href="burger-menu.css?v=20260707k">
+  <link rel="stylesheet" href="pixel-transition.css?v=20260707a">
+  <script src="pixel-transition.js?v=20260707b"></script>
+</head>
+<body>
+
+  <a href="../index.html" class="ui-back" aria-label="Zurück">
+    <img class="ui-back__arrow" src="../assets/nav/arrow-button.png" alt="" aria-hidden="true">
+  </a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="section-goo" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo"/>
+        <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="viewport">
+    <main class="canvas" aria-label="KI Bilder und Deepfake">
+
+      <!-- Hero – Telefon im Hintergrund, Titel im Vordergrund -->
+      <section class="layer ki-hero" aria-labelledby="ki-hero-heading">
+        <figure class="ki-hero__phone">
+          <img src="../assets/ki/iphone-hand.png" alt="" width="1049" height="787">
+        </figure>
+
+        <h1 id="ki-hero-heading" class="visually-hidden">KI Fotos</h1>
+        <p class="visually-hidden">Deepfakes</p>
+      </section>
+
+      <div class="layer ki-hero-titles" aria-hidden="true">
+        <img class="ki-hero__title ki-hero__title--ki" src="../assets/ki/title-ki-fotos.svg?v=20260701h" alt="" width="1304" height="220">
+        <img class="ki-hero__title ki-hero__title--df" src="../assets/ki/title-deepfakes.svg?v=20260701h" alt="" width="1166" height="272">
+      </div>
+
+      <!-- 3 Arten von Deepfakes (vor der Statistik-Section) -->
+      <section class="layer ki-intro" aria-labelledby="ki-types-heading">
+        <img class="ki-intro__bar" src="../assets/ki/intro-bar.png" alt="" width="1360" height="590">
+        <h2 id="ki-types-heading" class="ki-intro__title">Es gibt 3 Arten von Deepfakes</h2>
+      </section>
+
+      <section class="layer ki-type ki-type--foto" aria-labelledby="ki-type-foto">
+        <div class="ki-type__inner">
+          <div class="ki-type__row">
+            <h3 id="ki-type-foto" class="ki-type__label">Foto</h3>
+            <p class="ki-type__text">KI kann heute aus einem einzigen Bild ein täuschend echtes Foto einer Person in einer völlig anderen Situation erzeugen – anderer Ort, andere Kleidung, anderer Kontext. Laut einer repräsentativen Studie der IU Internationalen Hochschule aus 2025 wissen nur 34,3 Prozent der Menschen in Deutschland überhaupt, was ein Deepfake ist. Wer es nicht kennt, erkennt es nicht.</p>
+          </div>
+          <div class="ki-tablet">
+            <div class="ki-tablet__screen">
+              <iframe src="chatgpt-mockup.html?embed=1&v=20260707a" title="ChatGPT Mockup – Foto Deepfake" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="layer ki-type ki-type--video" aria-labelledby="ki-type-video">
+        <div class="ki-type__inner">
+          <div class="ki-type__row">
+            <p class="ki-type__text">Gefälschte Videos zeigen echte Menschen bei Dingen, die sie nie gesagt oder getan haben. Die menschliche Erkennungsrate für hochwertige KI-generierte Videos liegt laut der Cybersecurity-Firma Deepstrike bei nur 24,5 Prozent. Das heißt: Drei von vier Menschen fallen darauf herein – selbst wenn sie wissen, dass etwas nicht stimmen könnte.</p>
+            <h3 id="ki-type-video" class="ki-type__label">Video</h3>
+          </div>
+          <div class="ki-tablet">
+            <div class="ki-tablet__screen">
+              <iframe src="chatgpt-mockup-video.html?embed=1&v=20260707a" title="ChatGPT Mockup – Video Deepfake" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="layer ki-type ki-type--audio" aria-labelledby="ki-type-audio">
+        <div class="ki-type__inner">
+          <div class="ki-type__row">
+            <h3 id="ki-type-audio" class="ki-type__label">Audio</h3>
+            <p class="ki-type__text">Eine Stimme zu klonen braucht heute nur noch wenige Sekunden Audiomaterial – eine Sprachnachricht reicht. Das Fraunhofer-Institut AISEC hat in einem Experiment mit 472 Teilnehmenden untersucht, wie gut Menschen Audio-Deepfakes erkennen: Das Ergebnis war 80 Prozent Erkennungsrate beim Menschen, aber 95 Prozent bei spezialisierten KI-Modellen. Kriminelle nutzen das gezielt – etwa beim modernen Enkeltrick, bei dem Großeltern die geklonte Stimme ihrer Enkel hören.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pixel-Übergang hell → dunkel -->
+      <div class="layer sec-trans sec-trans--top" data-sec-transition data-config='{"topColor":"#f9f9f9","darkColor":"#0E0E0E","holes":[[2,1],[4,0],[6,2],[9,1],[12,0]],"floats":[[1,2],[11,2],[14,3]],"holeOffset":0}' aria-hidden="true">
+        <div class="sec-trans__sky"></div>
+        <div class="sec-trans__holes"></div>
+      </div>
+
+      <!-- Dunkle Sektion -->
+      <div class="layer sec-dark" data-sec-transition data-config='{"darkColor":"#0E0E0E"}' aria-hidden="true">
+        <div class="sec-dark__fill"></div>
+        <div class="sec-dark__holes"></div>
+      </div>
+
+      <!-- Pixel-Übergang dunkel → hell -->
+      <div class="layer sec-trans sec-trans--bottom" data-sec-transition data-config='{"topColor":"#f9f9f9","darkColor":"#0E0E0E","reverse":true,"holes":[[2,1],[9,1]],"floats":[[1,5],[11,5],[14,5]],"holeOffset":0}' aria-hidden="true">
+        <div class="sec-trans__sky"></div>
+        <div class="sec-trans__holes"></div>
+      </div>
+
+      <!-- Statistik -->
+      <p class="layer ki-stat">
+        <span class="ki-stat__count" id="ki-counter" aria-live="polite">0</span> KI Fotos<br>
+        wurden heute generiert
+      </p>
+
+      <!-- Scrollende KI-Portraits (Zeile 1) -->
+      <div class="layer photo-marquee photo-marquee--top" aria-hidden="true">
+        <div class="photo-marquee__track" data-marquee="left"></div>
+      </div>
+
+      <p class="layer ki-quote ki-quote--mid">
+        Wie viele davon Deepfakes sind, ist nicht genau bekannt...
+      </p>
+
+      <!-- Scrollende KI-Portraits (Zeile 2, entgegengesetzte Richtung) -->
+      <div class="layer photo-marquee photo-marquee--bottom" aria-hidden="true">
+        <div class="photo-marquee__track" data-marquee="right"></div>
+      </div>
+
+      <p class="layer ki-quote ki-quote--bottom">
+        ...aber bei einer Analyse von 14.678 Deepfakes waren 98% Pornografische Deepfakes
+      </p>
+
+      <!-- Visualisierung 98 % -->
+      <div class="layer ki-grid" id="ki-grid" aria-hidden="true"></div>
+
+      <!-- Quiz: Traust du deinen Augen? -->
+      <section class="layer ki-quiz" id="ki-quiz" aria-labelledby="ki-quiz-heading">
+        <h2 id="ki-quiz-heading" class="ki-quiz__title">Traust du deinen Augen?</h2>
+
+        <div class="ki-quiz__progress" id="ki-quiz-progress" role="progressbar" aria-label="Quiz-Fortschritt" aria-valuemin="1" aria-valuenow="1"></div>
+
+        <figure class="ki-quiz__card" id="ki-quiz-card">
+          <img class="ki-quiz__img" id="ki-quiz-img" src="" alt="Portrait – echt oder KI-generiert?">
+          <figcaption class="ki-quiz__verdict" id="ki-quiz-verdict" aria-live="polite"></figcaption>
+        </figure>
+
+        <div class="ki-quiz__buttons" id="ki-quiz-buttons" role="group" aria-label="Ist dieses Bild echt oder KI-generiert?">
+          <button type="button" class="ki-quiz__btn" data-answer="real">Echt</button>
+          <button type="button" class="ki-quiz__btn" data-answer="ai">KI</button>
+        </div>
+
+        <div class="ki-quiz__result" id="ki-quiz-result" hidden>
+          <p class="ki-quiz__result-head" id="ki-quiz-result-head"></p>
+          <p class="ki-quiz__result-sub" id="ki-quiz-result-sub"></p>
+          <button type="button" class="ki-quiz__retry" id="ki-quiz-retry">Nochmal</button>
+        </div>
+      </section>
+
+      <!-- Was kann ich tun? – Überschrift, erste Frage, scrollbares Textfeld -->
+      <section class="layer ki-help" aria-labelledby="ki-help-heading">
+
+        <!-- Überschrift-Blob: dasselbe Pixel-Element wie „Arten von Deepfakes" -->
+        <img class="ki-help__bar-img" src="../assets/ki/intro-bar.png" alt="" width="1360" height="590" aria-hidden="true">
+        <h2 id="ki-help-heading" class="ki-help__heading">Was kann ich tun?</h2>
+
+        <!-- Frage 1: Unterüberschrift-Pill + Textfeld-Box, per Goo verbunden -->
+        <div class="ki-help__qa" style="top:960px;">
+          <div class="ki-help__goo ki-help__goo--qa" aria-hidden="true">
+            <span class="ki-help__pill"></span>
+            <span class="ki-help__box"></span>
+          </div>
+          <h3 class="ki-help__sub">Wie schütze ich mich?</h3>
+          <div class="ki-help__field">
+            <p>Halte deine Profile privat und teile wenige Fotos aus ähnlichen Winkeln. Für Voice Cloning reichen Sekunden – geh sparsam mit öffentlichen Sprachaufnahmen um. Du kannst nicht alles kontrollieren, aber du kannst das verfügbare Material reduzieren.</p>
+          </div>
+        </div>
+
+        <!-- Frage 2 -->
+        <div class="ki-help__qa" style="top:2200px;">
+          <div class="ki-help__goo ki-help__goo--qa" aria-hidden="true">
+            <span class="ki-help__pill"></span>
+            <span class="ki-help__box"></span>
+          </div>
+          <h3 class="ki-help__sub">Wie zeige ich es an?</h3>
+          <div class="ki-help__field">
+            <p>Melde den Inhalt direkt auf der Plattform – jedes Netzwerk hat eine Meldefunktion. Bei sexualisierten Deepfakes kannst du zusätzlich Anzeige erstatten. In Deutschland ist die Verbreitung solcher Inhalte ohne Zustimmung strafbar (§ 201a StGB).</p>
+          </div>
+        </div>
+
+        <!-- Frage 3 (breitere Pill wegen längerer Überschrift) -->
+        <div class="ki-help__qa ki-help__qa--wide" style="top:3440px;">
+          <div class="ki-help__goo ki-help__goo--qa" aria-hidden="true">
+            <span class="ki-help__pill"></span>
+            <span class="ki-help__box"></span>
+          </div>
+          <h3 class="ki-help__sub">Wie geht es gesetzlich weiter?</h3>
+          <div class="ki-help__field">
+            <p>Das Recht holt langsam auf. In Deutschland ist die Verbreitung sexualisierter Deepfakes ohne Zustimmung strafbar (§ 201a StGB). Ab dem 2. August 2026 verpflichtet der EU AI Act Anbieter zur Kennzeichnung von KI-generierten Inhalten – ein erster wichtiger Schritt. Lücken bleiben, besonders bei Inhalten, die im Ausland gehostet werden.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer – statisch am Seitenende (ohne Scroll-Animation) -->
+      <nav class="layer layer--footer" id="section-footer" data-footer-static aria-label="Weitere Themen">
+        <a class="fbtn fbtn--instagram" href="instagram.html">
+          <svg class="fbtn__bg" viewBox="0 0 598 160" aria-hidden="true">
+            <defs>
+              <radialGradient id="ki-footer-ig-a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(341.707 -252.063 408.518 567.91 -273.114 236.825)">
+                <stop offset="0.134515" stop-color="#FE0081"/>
+                <stop offset="0.283654" stop-color="#FFC100"/>
+                <stop offset="0.619093" stop-color="#FE0081"/>
+                <stop offset="1" stop-color="#9D26D4"/>
+              </radialGradient>
+              <radialGradient id="ki-footer-ig-b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-189.349 -596.19 966.243 -314.695 341.958 509.841)">
+                <stop stop-color="#FFC100"/>
+                <stop offset="0.358376" stop-color="#FE0187"/>
+                <stop offset="0.639529" stop-color="#FE0081"/>
+                <stop offset="1" stop-color="#9D26D4" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M598 124.889C598 144.28 582.28 160 562.889 160H35.1111C15.7198 160 0 144.28 0 124.889V35.1111C0 15.7198 15.7198 0 35.1111 0H562.889C582.28 0 598 15.7198 598 35.1111V124.889Z" fill="url(#ki-footer-ig-a)"/>
+            <path d="M598 124.889C598 144.28 582.28 160 562.889 160H35.1111C15.7198 160 0 144.28 0 124.889V35.1111C0 15.7198 15.7198 0 35.1111 0H562.889C582.28 0 598 15.7198 598 35.1111V124.889Z" fill="url(#ki-footer-ig-b)" fill-opacity="0.71"/>
+          </svg>
+          <span class="fbtn__inner"><span class="fbtn__label">Instagram</span></span>
+        </a>
+        <a class="fbtn fbtn--tiktok" href="tiktok.html">
+          <svg class="fbtn__glitch fbtn__glitch--cyan" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#00F7EF"/></svg>
+          <svg class="fbtn__glitch fbtn__glitch--red" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FF004F"/></svg>
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FAFAFA"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">TikTok</span></span>
+        </a>
+        <a class="fbtn fbtn--tinder" href="tinder.html">
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 479 160" aria-hidden="true"><rect width="479" height="160" rx="20" fill="#EE2C6B"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">Tinder</span></span>
+        </a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="page-scale.js?v=20260710cb"></script>
+  <script src="section-transition.js?v=20260707c"></script>
+  <script src="footer-nav.js?v=20260710cb"></script>
+  <script src="ki.js?v=20260710cb"></script>
+  <script src="burger-menu.js?v=20260707g"></script>
+</body>
+</html>

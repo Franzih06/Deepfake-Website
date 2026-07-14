@@ -1,0 +1,33 @@
+/* Gemeinsame 16:9-Skalierung für Canvas-Unterseiten (1440 × 810 Referenz-Viewport) */
+
+:root {
+  --canvas-w: 1440;
+  --canvas-view-h: 810; /* 1440 × 9 / 16 */
+  --page-scale: min(
+    100vw / (var(--canvas-w) * 1px),
+    100vh / (var(--canvas-view-h) * 1px)
+  );
+  --page-offset-x: max(0px, (100vw - var(--canvas-w) * var(--page-scale) * 1px) / 2);
+}
+
+/* Schwarze Flächen & Karussell über volle Bildschirmbreite (kein heller Rand) */
+.canvas .sec-dark,
+.canvas .sec-trans,
+.canvas .photo-marquee {
+  width: calc(100vw / var(--page-scale));
+  left: calc(-1 * var(--page-offset-x) / var(--page-scale));
+}
+
+/* Fixe Controls am skalierten Canvas-Rand ausrichten */
+.ui-back {
+  left: calc(var(--page-offset-x) + 24px * var(--page-scale));
+  top:  calc(24px * var(--page-scale));
+  width:  calc(40px * var(--page-scale));
+  height: calc(40px * var(--page-scale));
+  border-radius: calc(5px * var(--page-scale));
+}
+
+.ui-back__arrow {
+  width:  calc(24px * var(--page-scale));
+  height: calc(24px * var(--page-scale));
+}

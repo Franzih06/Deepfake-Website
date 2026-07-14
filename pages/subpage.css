@@ -1,0 +1,54 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-text: #0E0E0E;
+  --color-bg:   #f9f9f9;
+  --font-body:  'Jura', sans-serif;
+}
+
+html { font-size: 16px; }
+
+body {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.ui-back {
+  position: fixed;
+  top:  calc(62px * var(--page-scale));
+  background: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.ui-back__arrow {
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: invert(1);
+  transform: scaleX(-1);
+}
+
+.subpage-placeholder {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16px * var(--page-scale));
+  padding: calc(120px * var(--page-scale)) calc(24px * var(--page-scale)) calc(24px * var(--page-scale));
+  text-align: center;
+}
+
+.subpage-placeholder h1 {
+  font-size: clamp(1.5rem, calc(3.5rem * var(--page-scale)), 3.5rem);
+  font-weight: 600;
+}
+
+.subpage-placeholder p {
+  font-size: clamp(1rem, calc(1.125rem * var(--page-scale)), 1.25rem);
+  opacity: 0.7;
+}

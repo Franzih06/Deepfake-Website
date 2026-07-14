@@ -1,0 +1,39 @@
+/* Pixel-Transition – Seitenübergang im Pixel-Look der Seite
+   Ein Raster gerundeter Kacheln deckt die Seite gestaffelt zu (beim Verlassen)
+   und deckt sie beim Betreten der neuen Seite wieder auf. */
+
+.pixel-trans {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: grid;
+  overflow: hidden;
+  pointer-events: none;
+  --pixel-trans-color: #0E0E0E;
+}
+
+.pixel-trans[hidden] { display: none; }
+
+.pixel-trans__cell {
+  background: var(--pixel-trans-color);
+  border-radius: 12px;
+  transform: scale(0);
+  transform-origin: center;
+  will-change: transform;
+  /* leichte Überlappung (1.08) schließt die Lücken zwischen den runden Ecken */
+  transition: transform 0.34s cubic-bezier(0.5, 0, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.pixel-trans.is-covered .pixel-trans__cell {
+  transform: scale(1.08);
+}
+
+/* Sofort-Zustand ohne Animation (Setup beim Betreten der Seite) */
+.pixel-trans.is-instant .pixel-trans__cell {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-trans { display: none !important; }
+}

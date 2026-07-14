@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>Deepfake – Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="instagram-v1.css">
+</head>
+<body>
+
+  <a href="../../index.html" class="ui-back" aria-label="Zurück">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12.4 4.979c0 .656-.537 1.188-1.2 1.188-.663 0-1.2.531-1.2 1.187s-.537 1.188-1.2 1.188c-.663 0-1.2.531-1.2 1.187s.537 1.188 1.2 1.188h11.973c.678 0 1.227.543 1.227 1.214v.738c0 .671-.549 1.214-1.227 1.214H8.8c-.663 0-1.2.532-1.2 1.188s.537 1.187 1.2 1.187c.663 0 1.2.532 1.2 1.188s.537 1.187 1.2 1.187c.663 0 1.2.532 1.2 1.188v.765c0 .671-.549 1.214-1.227 1.214H10.4c-.663 0-1.2-.532-1.2-1.187s-.537-1.188-1.2-1.188c-.663 0-1.2-.532-1.2-1.187s-.537-1.188-1.2-1.188c-.663 0-1.2-.531-1.2-1.187v-.792c0-.656-.537-1.188-1.2-1.188C2.537 14.083 2 13.552 2 12.896v-.792C2 11.448 2.537 10.917 3.2 10.917c.663 0 1.2-.532 1.2-1.188V8.938c0-.656.537-1.188 1.2-1.188s1.2-.531 1.2-1.187-.537-1.188-1.2-1.188c-.663 0-1.2-.532-1.2-1.187V3.752C5.2 3.337 5.537 3 5.937 3h.263c.663 0 1.2.532 1.2 1.188z" fill="white"/>
+    </svg>
+  </a>
+
+  <aside class="ui-sidebar" aria-hidden="true">
+    <svg viewBox="0 0 12 318" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#DADADA" d="M9.34 0c1.03 0 1.87.836 1.87 1.868v7.472c0 1.032-.84 1.868-1.87 1.868C7.9 11.208 6.73 12.378 6.73 13.822v60.016c0 1.444 1.17 2.615 2.61 2.615 1.03 0 1.87.836 1.87 1.868v7.472c0 1.032-.84 1.868-1.87 1.868-1.44 0-2.61 1.17-2.61 2.614v60.016c0 1.444 1.17 2.614 2.61 2.614 1.03 0 1.87.836 1.87 1.868v7.473c0 1.031-.84 1.867-1.87 1.867-1.44 0-2.61 1.171-2.61 2.615v60.016c0 1.444 1.17 2.614 2.61 2.614 1.03 0 1.87.836 1.87 1.868v7.473c0 1.032-.84 1.868-1.87 1.868-1.44 0-2.61 1.17-2.61 2.614v60.016c0 1.444 1.17 2.614 2.61 2.614 1.03 0 1.87.836 1.87 1.868v7.472c0 1.032-.84 1.868-1.87 1.868H1.87c-1.03 0-1.87-.836-1.87-1.868v-7.472c0-1.032.84-1.868 1.87-1.868 1.44 0 2.61-1.17 2.61-2.614v-60.016c0-1.444-1.17-2.614-2.61-2.614C.836 240.568 0 239.732 0 238.7v-7.472c0-1.032.836-1.869 1.868-1.869C3.312 229.359 4.483 228.188 4.483 226.744V166.73c0-1.444-1.171-2.615-2.615-2.615C.836 164.115 0 163.279 0 162.247V154.774c0-1.031.836-1.868 1.868-1.868C3.312 152.906 4.483 151.735 4.483 150.291V90.277c0-1.444-1.171-2.615-2.615-2.615C.836 87.662 0 86.826 0 85.794V78.321c0-1.032.836-1.868 1.868-1.868C3.312 76.453 4.483 75.282 4.483 73.838V13.823c0-1.444-1.171-2.615-2.615-2.615C.836 11.208 0 10.372 0 9.34V1.868C0 .836.836 0 1.868 0H9.34z"/>
+    </svg>
+  </aside>
+
+  <div class="viewport">
+    <main class="canvas" aria-label="Instagram Unterseite">
+
+      <!-- ═══ z2: Großer schwarzer Übergangs-Blob (Viereck6) ═══ -->
+      <img class="layer layer--mega" src="../../assets/pixel/Viereck6.png" alt="" width="1655" height="3591">
+
+      <!-- ═══ z3: Deepfake-Bilder (in Ausschnitten von Viereck6) ═══ -->
+      <img class="layer layer--df-post" src="../../assets/instagram/deepfake-post.png" alt="Deepfake Instagram Post" width="682" height="1253">
+      <img class="layer layer--df-reel" src="../../assets/instagram/deepfake-reel.png" alt="Deepfake Instagram Reel" width="700" height="1426">
+
+      <!-- ═══ z4: KI-Influencer Blob (Viereck1) – unter Posts ═══ -->
+      <img class="layer layer--blob-ki" src="../../assets/pixel/Viereck1.png" alt="" width="924" height="928">
+
+      <!-- ═══ z5: Problem-Blobs (Viereck4 links, Viereck5 rechts gespiegelt) ═══ -->
+      <img class="layer layer--blob-prob-l" src="../../assets/pixel/Viereck4.png" alt="" width="724" height="864">
+      <img class="layer layer--blob-prob-r" src="../../assets/pixel/Viereck5.png" alt="" width="752" height="864">
+
+      <!-- ═══ z10: Instagram-Feed (über KI-Blob im Überlappungsbereich) ═══ -->
+      <div class="layer layer--posts">
+
+        <article class="post">
+          <header class="post__head">
+            <div class="post__user">
+              <img class="post__avatar" src="../../assets/media/05.png" alt="">
+              <span class="post__name">Künstliche Intelligenz</span>
+            </div>
+            <span class="post__menu" aria-hidden="true">•••</span>
+          </header>
+          <div class="post__media">
+            <img src="../../assets/media/05.png" alt="KI-generiertes Urlaubsfoto">
+          </div>
+          <footer class="post__foot">
+            <div class="post__stats">
+              <span>♡ 2.393</span>
+              <span>💬 127</span>
+              <span>➤ 208</span>
+            </div>
+            <span>🔖</span>
+          </footer>
+        </article>
+
+        <article class="post">
+          <header class="post__head">
+            <div class="post__user">
+              <img class="post__avatar" src="../../assets/media/05.png" alt="">
+              <span class="post__name">Künstliche Intelligenz</span>
+            </div>
+            <span class="post__menu" aria-hidden="true">•••</span>
+          </header>
+          <div class="post__media">
+            <video src="../../assets/media/04.mp4" autoplay muted loop playsinline></video>
+          </div>
+          <footer class="post__foot">
+            <div class="post__stats">
+              <span>♡ 2.393</span>
+              <span>💬 127</span>
+              <span>➤ 208</span>
+            </div>
+            <span>🔖</span>
+          </footer>
+        </article>
+
+        <article class="post">
+          <header class="post__head">
+            <div class="post__user">
+              <img class="post__avatar" src="../../assets/media/05.png" alt="">
+              <span class="post__name">Künstliche Intelligenz</span>
+            </div>
+            <span class="post__menu" aria-hidden="true">•••</span>
+          </header>
+          <div class="post__media">
+            <img src="../../assets/media/07.png" alt="KI-generiertes Foto">
+          </div>
+          <footer class="post__foot">
+            <div class="post__stats">
+              <span>♡ 2.393</span>
+              <span>💬 127</span>
+              <span>➤ 208</span>
+            </div>
+            <span>🔖</span>
+          </footer>
+        </article>
+
+      </div>
+
+      <!-- ═══ z12: Überschrift auf KI-Blob ═══ -->
+      <h2 class="layer layer--title-ki">Was sind Ki<br>influencer?</h2>
+
+      <!-- ═══ z15: Intro-Karte (Viereck2) – über Post 1 ═══ -->
+      <div class="layer layer--intro">
+        <img class="intro__shape" src="../../assets/pixel/Viereck2.png" alt="" width="677" height="741">
+        <div class="intro__text">
+          <p>Du scrollst durch Instagram und siehst ein Profil: eine junge Frau, perfekte Fotos, coole Outfits, Reisen durch die Welt. Alles wirkt echt – aber diese Person existiert nicht.</p>
+          <p>KI-Influencer sind vollständig am Computer erschaffene Figuren. Nicht alle Accounts machen deutlich, dass kein Mensch dahintersteckt.</p>
+        </div>
+      </div>
+
+      <!-- ═══ z18: Problem-Streifen (Viereck3) – über Post 2 ═══ -->
+      <img class="layer layer--blob-strip" src="../../assets/pixel/Viereck3.png" alt="" width="942" height="481">
+      <h2 class="layer layer--title-problem">Warum ist das<br>ein Problem?</h2>
+
+      <!-- ═══ z16: Fließtext auf Problem-Blobs ═══ -->
+      <p class="layer layer--text-prob-l">Wenn eine KI-Figur Produkte bewirbt, entsteht Vertrauen ohne echte Grundlage – die Person hinter der Empfehlung existiert nicht. Gleichzeitig setzen KI-Körper Standards, die biologisch schlicht nicht erreichbar sind: kein Mensch sieht so aus, weil kein Mensch dahintersteckt.</p>
+      <p class="layer layer--text-prob-r">Am gefährlichsten ist der technologische Übertrag: dieselben Modelle, die einen harmlosen KI-Influencer erschaffen, können mit wenigen Klicks das Gesicht einer echten Person in Inhalte setzen, denen sie nie zugestimmt hat – ob für Betrug, Erpressung oder sexualisierte Deepfakes.</p>
+
+      <!-- ═══ z8/9: Übergangs-Überschriften ═══ -->
+      <h2 class="layer layer--title-vom">Vom KI-Influencer</h2>
+      <h2 class="layer layer--title-zum">zum Deepfake</h2>
+
+      <!-- ═══ z20: Deepfake-Textkarten (über Bildern) ═══ -->
+      <div class="layer layer--df-card layer--df-card-t">
+        <p>Betrüger nutzen die Gesichter von Prominenten oder ahnungslosen Nutzern, um Vertrauen zu erwecken und dann über gefälschte Profile z.B. für dubiose Investments zu werben.</p>
+      </div>
+      <div class="layer layer--df-card layer--df-card-b">
+        <p>Betrüger nutzen die Gesichter von Prominenten oder ahnungslosen Nutzern, um Vertrauen zu erwecken und dann über gefälschte Profile z.B. für dubiose Investments zu werben.</p>
+      </div>
+
+      <!-- ═══ z25: Hero (ganz oben) ═══ -->
+      <header class="layer layer--hero">
+        <h1 class="hero__title">Instagram</h1>
+        <p class="hero__sub">Wem folgst du eigentlich?</p>
+      </header>
+
+      <!-- ═══ z30: Footer-Navigation ═══ -->
+      <nav class="layer layer--footer" aria-label="Weitere Themen">
+        <a class="fbtn fbtn--ki" href="ki.html">
+          <svg class="fbtn__bg" viewBox="0 0 1041 160" aria-hidden="true"><path d="M1040 24C1040 24.0701 1040.06 24.127 1040.13 24.127C1040.2 24.127 1040.25 24.1838 1040.25 24.2539V130.667C1040.25 130.737 1040.2 130.794 1040.13 130.794C1040.06 130.794 1040 130.851 1040 130.921V145.397C1040 153.462 1033.46 160 1025.4 160H20C8.95432 160 0 151.046 0 140V20C0 8.95431 8.95431 0 20 0H1027.94C1034.6 0 1040 5.401 1040 12.0635V24Z"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">KI Bilder und Deepfake</span><img class="fbtn__arrow" src="../../assets/nav/arrow-button.png" alt=""></span>
+        </a>
+        <a class="fbtn fbtn--tiktok" href="tiktok.html">
+          <svg class="fbtn__glitch fbtn__glitch--cyan" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#00F7EF"/></svg>
+          <svg class="fbtn__glitch fbtn__glitch--red" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FF004F"/></svg>
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FAFAFA"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">TikTok</span><img class="fbtn__arrow" src="../../assets/nav/arrow-button.png" alt=""></span>
+        </a>
+        <a class="fbtn fbtn--tinder" href="tinder.html">
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 479 160" aria-hidden="true"><rect width="479" height="160" rx="20" fill="#EE2C6B"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">Tinder</span><img class="fbtn__arrow fbtn__arrow--light" src="../../assets/nav/arrow-button.png" alt=""></span>
+        </a>
+      </nav>
+
+    </main>
+  </div>
+
+</body>
+</html>

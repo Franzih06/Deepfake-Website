@@ -1,0 +1,259 @@
+/* Burger-Menü v3 – fix oben rechts, Gooey-Pixel-Animation */
+:root {
+  --burger-pixel-color: #000;
+  --burger-text-color: #fff;
+  --burger-accent: #F7730D;
+  --burger-ease: cubic-bezier(.16, 1, .3, 1);
+  --burger-scale: 0.5;
+  --page-offset-x: 0px;
+  --page-scale: 1;
+}
+
+.menu-wrap {
+  position: fixed;
+  top: 0;
+  right: var(--page-offset-x, 0px);
+  width: 480px;
+  height: 560px;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 100;
+  transform: scale(var(--burger-scale));
+  transform-origin: top right;
+}
+
+.menu-wrap .shapes {
+  position: absolute;
+  inset: 0;
+  filter: url(#burger-goo);
+}
+
+.menu-wrap .burger {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 240px;
+  height: 240px;
+  background: var(--burger-pixel-color);
+  border-radius: 44px;
+  transform-origin: 100% 0;
+  transform: scale(1);
+  transition: transform .35s var(--burger-ease);
+}
+
+.menu-wrap.hover .burger {
+  transform: scale(1.05);
+}
+
+.menu-wrap .teaser {
+  position: absolute;
+  top: 150px;
+  right: 150px;
+  width: 120px;
+  height: 120px;
+  background: var(--burger-pixel-color);
+  border-radius: 34px;
+  transform-origin: 100% 0;
+  transition: transform .4s var(--burger-ease);
+}
+
+.menu-wrap.hover .teaser {
+  transform: scale(1.06);
+}
+
+.menu-wrap .panel {
+  position: absolute;
+  top: 150px;
+  right: 150px;
+  width: 440px;
+  height: 500px;
+  background: var(--burger-pixel-color);
+  border-radius: 50px;
+  transform-origin: 100% 0;
+  transform: scale(0);
+  transition: transform .55s var(--burger-ease);
+}
+
+.menu-wrap.open .panel {
+  transform: scale(1);
+}
+
+.menu-wrap .content {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.menu-wrap .burger-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 190px;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  transform-origin: 100% 0;
+  transition: transform .35s var(--burger-ease);
+}
+
+.menu-wrap.hover .burger-btn {
+  transform: scale(1.05);
+}
+
+/* Icon-Container mit Goo-Filter → Verbindungseffekt beim Morph Linien↔X */
+.menu-wrap .burger-icon {
+  position: relative;
+  width: 54px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  color: var(--burger-text-color);
+  /* eigene Compositing-Ebene → Filter/Transform laufen ruckelfrei */
+  transform: translateZ(0);
+  will-change: transform, filter;
+}
+
+/* Goo nur während der kurzen Morph-Bewegung – im Ruhezustand (offen/zu)
+   bleibt die Pixel-Optik scharf, statt dauerhaft verwaschen zu sein */
+.menu-wrap.is-morphing .burger-icon {
+  filter: url(#burger-icon-goo);
+}
+
+.menu-wrap .burger-bar {
+  display: block;
+  width: 54px;
+  height: 6px;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: center;
+  will-change: transform, opacity;
+  transition: transform .42s var(--burger-ease), opacity .2s linear .22s;
+}
+
+/* Die beiden äußeren Linien werden selbst zu den X-Balken: sie drehen sich
+   zur Mitte (Zeilenabstand + Höhe = 15px) und kreuzen sich dort. Erst kurz
+   vor Ende der Drehung blenden sie zur echten Pixel-Grafik über (unten) –
+   Strichstärke (6px) ist an das X angeglichen, Überblendung überlappt
+   großzügig (.22s–.42s) für einen fließenden statt harten Wechsel. */
+.menu-wrap.open .burger-bar--1 {
+  transform: translateY(15px) rotate(45deg);
+  opacity: 0;
+  transition: transform .42s var(--burger-ease), opacity .2s linear .22s;
+}
+
+.menu-wrap.open .burger-bar--2 {
+  opacity: 0;
+  transform: scaleX(0);
+  transition: transform .3s var(--burger-ease), opacity .2s linear;
+}
+
+.menu-wrap.open .burger-bar--3 {
+  transform: translateY(-15px) rotate(-45deg);
+  opacity: 0;
+  transition: transform .42s var(--burger-ease), opacity .2s linear .22s;
+}
+
+/* Pixel-X – deckungsgleich mit der Kreuzung der Balken, blendet großzügig
+   überlappend ein (Kanten bleiben blockig, keine Rotation nötig) */
+.menu-wrap .burger-x {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 62px;
+  height: auto;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity .2s linear;
+}
+
+.menu-wrap.open .burger-x {
+  opacity: 1;
+  transition: opacity .2s linear .22s;
+}
+
+.menu-wrap .nav {
+  position: absolute;
+  top: 220px;
+  right: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-wrap .nav li {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .4s var(--burger-ease), transform .4s var(--burger-ease);
+  transition-delay: 0s;
+}
+
+.menu-wrap.open .nav li {
+  opacity: 1;
+  transform: none;
+}
+
+.menu-wrap.open .nav li:nth-child(1) { transition-delay: .18s; }
+.menu-wrap.open .nav li:nth-child(2) { transition-delay: .24s; }
+.menu-wrap.open .nav li:nth-child(3) { transition-delay: .30s; }
+.menu-wrap.open .nav li:nth-child(4) { transition-delay: .36s; }
+.menu-wrap.open .nav li:nth-child(5) { transition-delay: .42s; }
+
+.menu-wrap .nav a {
+  display: inline-block;
+  color: var(--burger-text-color);
+  text-decoration: none;
+  font-family: 'Jura', sans-serif;
+  font-size: 42px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color .2s var(--burger-ease), transform .2s var(--burger-ease);
+}
+
+.menu-wrap .nav a:hover {
+  color: var(--burger-accent);
+  transform: translateX(6px);
+}
+
+/* Aktuelle Seite hervorheben */
+.menu-wrap .nav a.is-current {
+  color: var(--burger-accent);
+  font-weight: 700;
+}
+
+.menu-wrap .nav a.is-current:hover {
+  transform: none;
+}
+
+/* Instagram → bunter Instagram-Gradient (wie Progressbar), sowohl als
+   aktuelle Seite als auch beim Hover (statt Orange) */
+.menu-wrap .nav a.is-current[data-page="instagram.html"],
+.menu-wrap .nav a[data-page="instagram.html"]:hover {
+  background: linear-gradient(90deg, #7B2FFF, #FF2FD4, #FF2060, #FF5500, #FFB800);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tiktok & Tinder: Inhalte folgen noch – gedimmt anzeigen */
+.menu-wrap .nav li.is-soon a {
+  color: rgba(255, 255, 255, .35);
+}
+
+.menu-wrap .nav li.is-soon a:hover {
+  color: rgba(255, 255, 255, .55);
+  transform: none;
+}

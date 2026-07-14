@@ -1,0 +1,159 @@
+/* Info-FAQ – Pixel-Blob Akkordeon (Port von Dropdown Insta.html) */
+
+.layer--info-blob {
+  --faq-scale: 1.9;
+  --faq-w-scale: 1.68;
+  --faq-overlap: 14px; /* schließt Spalt zum Post-Feed (Blob liegt darüber) */
+  --faq-pixel: #000;
+  --faq-base-w: calc(560px * var(--faq-w-scale));
+  --faq-w: calc(var(--faq-base-w) + var(--faq-overlap));
+  --faq-native-h: calc(var(--faq-base-w) * 906 / 994);
+  --faq-cap-top: calc(var(--faq-native-h) * 0.22);
+  --faq-cap-bottom: calc(var(--faq-native-h) * 0.23);
+  --faq-extra-bottom: calc(48px * var(--faq-scale));
+  --faq-extra-top: calc(14px * var(--faq-scale));
+  left: 8px;
+  top: 1240px;
+  width: var(--faq-w);
+  height: auto;
+  z-index: var(--z-blob);
+  overflow: visible;
+}
+
+.info-faq {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.info-faq__move {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  contain: layout style;
+}
+
+.info-faq.is-scrolling .info-faq__a,
+.info-faq.is-scrolling .info-faq__icon {
+  transition: none;
+}
+
+/* Schwarze Pixel-Silhouette – eine Fläche, keine Spalten zwischen Segmenten */
+.info-faq__shapes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: url('../assets/pixel/InstagramViereck1.png');
+  mask-image: url('../assets/pixel/InstagramViereck1.png');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.info-faq__shape-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--faq-pixel);
+}
+
+.layer--info-blob.is-pinned .info-faq__shapes,
+.layer--info-blob.is-pinned .info-faq__content {
+  will-change: auto;
+}
+
+.info-faq__content {
+  position: relative;
+  z-index: 1;
+  padding: calc(var(--faq-cap-top) + 4px * var(--faq-scale) + var(--faq-extra-top)) calc(var(--faq-w) * 0.13) calc(var(--faq-cap-bottom) + 4px * var(--faq-scale) + var(--faq-extra-bottom)) calc(var(--faq-w) * 0.07);
+}
+
+.info-faq__item + .info-faq__item {
+  margin-top: calc(2px * var(--faq-scale));
+}
+
+.info-faq__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12px * var(--faq-scale));
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: calc(10px * var(--faq-scale)) 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--color-text-inverse);
+  font-family: var(--font-heading);
+  font-size: calc(16px * var(--faq-scale));
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.info-faq__q-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.info-faq__icon {
+  flex-shrink: 0;
+  width: calc(18px * var(--faq-scale));
+  height: calc(18px * var(--faq-scale));
+  transition: transform 0.45s cubic-bezier(.16, 1, .3, 1);
+}
+
+.info-faq__item.is-open .info-faq__icon {
+  transform: rotate(180deg);
+}
+
+.info-faq.is-instant .info-faq__icon {
+  transition: none;
+}
+
+.layer--info-blob.is-pinned .info-faq__move {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.info-faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  min-height: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(.16, 1, .3, 1);
+}
+
+.info-faq__item.is-open .info-faq__a {
+  grid-template-rows: 1fr;
+  min-height: var(--faq-answer-h, auto);
+}
+
+.info-faq.is-instant .info-faq__a,
+.info-faq.is-scrolling .info-faq__a {
+  transition: none;
+}
+
+.info-faq__a-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.info-faq__a-inner p {
+  margin: 0 0 calc(12px * var(--faq-scale));
+  padding-right: calc(16px * var(--faq-scale));
+  color: #cfcfcf;
+  font-family: var(--font-body);
+  font-size: calc(13px * var(--faq-scale));
+  line-height: 1.5;
+}
+
+.info-faq__a-inner p:first-child {
+  padding-top: calc(2px * var(--faq-scale));
+}
+
+.info-faq__a-inner p:last-child {
+  margin-bottom: calc(12px * var(--faq-scale));
+}

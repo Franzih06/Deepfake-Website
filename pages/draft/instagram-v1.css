@@ -1,0 +1,520 @@
+/* ═══════════════════════════════════════════════════════════════
+   Instagram – Figma 690:312 (1440 × 11630)
+   Absolute Layout mit expliziter Z-Index-Hierarchie
+   Keine Animationen
+═══════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Dotmax Demo';
+  src: url('../../assets/fonts/dotmax-demo.regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style:  normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:     #f9f9f9;
+  --black:  #000000;
+  --white:  #ffffff;
+  --font-h: 'Dotmax Demo', Impact, sans-serif;
+  --font-b: 'Jura', sans-serif;
+  --body:   24px;
+  --canvas-w: 1440px;
+  --canvas-h: 11630px;
+
+  /* Z-Index – von unten nach oben */
+  --z-mega:    2;   /* Viereck6 schwarzer Übergang */
+  --z-df-img:  3;   /* Deepfake Screenshots */
+  --z-blob-ki: 4;   /* Viereck1 KI-Blob */
+  --z-blob-pr: 14;  /* Viereck4/5 Problem-Blobs – über Posts */
+  --z-title-t: 8;   /* „Vom KI-Influencer“ / „zum Deepfake“ */
+  --z-posts:  10;   /* Instagram-Feed */
+  --z-t-ki:   12;   /* „Was sind KI influencer?“ */
+  --z-intro:  15;   /* Viereck2 Intro-Karte */
+  --z-t-prob: 16;   /* Fließtext auf Problem-Blobs */
+  --z-strip:  18;   /* Viereck3 Problem-Streifen */
+  --z-t-strip:19;   /* „Warum ist das ein Problem?“ */
+  --z-df-txt: 20;   /* Deepfake-Textkarten */
+  --z-hero:   25;   /* Seiten-Titel */
+  --z-footer: 30;   /* Navigation */
+  --z-ui:    100;   /* Zurück + Sidebar */
+}
+
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: var(--font-b);
+  overflow-x: hidden;
+}
+
+img, video { display: block; max-width: none; }
+svg  { display: block; }
+a    { text-decoration: none; color: inherit; }
+
+
+/* ── Viewport-Skalierung ─────────────────────────────────────── */
+.viewport {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1439px) {
+  .viewport {
+    height: calc(var(--canvas-h) * (100vw / var(--canvas-w)));
+  }
+  .canvas {
+    transform: scale(calc(100vw / var(--canvas-w)));
+    transform-origin: top left;
+  }
+  .ui-back,
+  .ui-sidebar {
+    transform: scale(calc(100vw / var(--canvas-w)));
+    transform-origin: top left;
+  }
+}
+
+@media (min-width: 1440px) {
+  .viewport { display: flex; justify-content: center; }
+}
+
+
+/* ── UI: Zurück + Sidebar ────────────────────────────────────── */
+.ui-back {
+  position: fixed;
+  top:  62px;
+  left: 24px;
+  width:  40px;
+  height: 40px;
+  border-radius: 5px;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-ui);
+}
+
+.ui-sidebar {
+  position: fixed;
+  left: 29px;
+  top:  151px;
+  width:  17px;
+  height: 849px;
+  z-index: var(--z-ui);
+  pointer-events: none;
+}
+
+.ui-sidebar svg {
+  width:  100%;
+  height: 100%;
+}
+
+
+/* ── Canvas ──────────────────────────────────────────────────── */
+.canvas {
+  position: relative;
+  width:  var(--canvas-w);
+  height: var(--canvas-h);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 2 – Viereck6 (schwarzer Mega-Blob, y=6521)
+   Liegt UNTER Deepfake-Bildern und Überschriften
+═══════════════════════════════════════════════════════════════ */
+.layer--mega {
+  left: -195px;
+  top:  6521px;
+  width:  1655px;
+  height: 3591px;
+  z-index: var(--z-mega);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 3 – Deepfake-Bilder (in transparenten Ausschnitten)
+   ÜBER Viereck6, UNTER Textkarten
+═══════════════════════════════════════════════════════════════ */
+.layer--df-post {
+  left: 759px;
+  top:  7316px;
+  width:  682px;
+  z-index: var(--z-df-img);
+}
+
+.layer--df-reel {
+  left: 14px;
+  top:  8347px;
+  width:  700px;
+  z-index: var(--z-df-img);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 4 – Viereck1 KI-Blob (y=703)
+   UNTER dem Instagram-Feed
+═══════════════════════════════════════════════════════════════ */
+.layer--blob-ki {
+  left: 0;
+  top:  703px;
+  width:  924px;
+  z-index: var(--z-blob-ki);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 5 – Viereck4/5 Problem-Blobs
+   UNTER Posts im oberen Bereich, Text liegt darüber (z16)
+═══════════════════════════════════════════════════════════════ */
+.layer--blob-prob-l {
+  left: 62px;
+  top:  3614px;
+  width:  724px;
+  z-index: var(--z-blob-pr);
+}
+
+.layer--blob-prob-r {
+  left: 654px;
+  top:  4810px;
+  width:  752px;
+  z-index: var(--z-blob-pr);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 10 – Instagram-Feed (y=1496)
+   ÜBER KI-Blob im Überlappungsbereich
+═══════════════════════════════════════════════════════════════ */
+.layer--posts {
+  left: 286px;
+  top:  1496px;
+  width:  863px;
+  z-index: var(--z-posts);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post {
+  background: var(--white);
+}
+
+.post__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 29px 20px;
+}
+
+.post__user {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.post__avatar {
+  width:  72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.post__name {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.post__menu {
+  font-size: 20px;
+  letter-spacing: 2px;
+  padding-right: 12px;
+}
+
+.post__media img,
+.post__media video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post__media video {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.post__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 39px 29px;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.post__stats {
+  display: flex;
+  gap: 32px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 12 – „Was sind KI influencer?“ (auf Viereck1)
+═══════════════════════════════════════════════════════════════ */
+.layer--title-ki {
+  left: 114px;
+  top:  946px;
+  width:  639px;
+  font-family: var(--font-h);
+  font-size: 122px;
+  line-height: 1.15;
+  color: var(--white);
+  z-index: var(--z-t-ki);
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 15 – Viereck2 Intro (y=1777)
+   ÜBER Post 1
+═══════════════════════════════════════════════════════════════ */
+.layer--intro {
+  left: 763px;
+  top:  1777px;
+  width:  677px;
+  height: 741px;
+  z-index: var(--z-intro);
+}
+
+.intro__shape {
+  width:  100%;
+  height: 100%;
+}
+
+.intro__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:  532px;
+  font-size: var(--body);
+  line-height: 1.45;
+  color: var(--white);
+  pointer-events: none;
+}
+
+.intro__text p + p {
+  margin-top: 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 18/19 – Viereck3 + „Warum ist das ein Problem?“
+   ÜBER Post 2
+═══════════════════════════════════════════════════════════════ */
+.layer--blob-strip {
+  left: 249px;
+  top:  2580px;
+  width:  942px;
+  z-index: var(--z-strip);
+}
+
+.layer--title-problem {
+  left: 379px;
+  top:  2703px;
+  width:  618px;
+  font-family: var(--font-h);
+  font-size: 96px;
+  line-height: 1.1;
+  color: var(--white);
+  z-index: var(--z-t-strip);
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 16 – Fließtext auf Problem-Blobs
+   ÜBER Viereck4/5
+═══════════════════════════════════════════════════════════════ */
+.layer--text-prob-l {
+  left: 62px;
+  top:  3939px;
+  width:  532px;
+  font-size: var(--body);
+  line-height: 1.45;
+  color: var(--white);
+  z-index: var(--z-t-prob);
+}
+
+.layer--text-prob-r {
+  left: 849px;
+  top:  5131px;
+  width:  532px;
+  font-size: var(--body);
+  line-height: 1.45;
+  color: var(--white);
+  z-index: var(--z-t-prob);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 8 – Übergangs-Überschriften
+   „Vom KI-Influencer“ auf Weiß, „zum Deepfake“ auf Schwarz
+═══════════════════════════════════════════════════════════════ */
+.layer--title-vom {
+  left: 141px;
+  top:  5968px;
+  width:  1174px;
+  font-family: var(--font-h);
+  font-size: 146px;
+  line-height: 1.15;
+  color: var(--black);
+  z-index: var(--z-title-t);
+}
+
+.layer--title-zum {
+  left: 141px;
+  top:  6960px;
+  width:  1174px;
+  font-family: var(--font-h);
+  font-size: 146px;
+  line-height: 1.15;
+  color: var(--white);
+  z-index: var(--z-title-t);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 20 – Deepfake-Textkarten (über Screenshots)
+═══════════════════════════════════════════════════════════════ */
+.layer--df-card {
+  background: var(--black);
+  color: var(--white);
+  font-size: var(--body);
+  line-height: 1.45;
+  padding: 28px 32px;
+  z-index: var(--z-df-txt);
+  /* Pixel-Kanten via clip-path */
+  clip-path: polygon(
+    0 12px, 12px 12px, 12px 0,
+    calc(100% - 40px) 0, calc(100% - 40px) 12px, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%, 12px calc(100% - 12px),
+    0 calc(100% - 12px)
+  );
+}
+
+.layer--df-card-t {
+  left: 74px;
+  top:  7284px;
+  width:  529px;
+}
+
+.layer--df-card-b {
+  left: 759px;
+  top:  8393px;
+  width:  529px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 25 – Hero (ganz oben, über allem im Header-Bereich)
+═══════════════════════════════════════════════════════════════ */
+.layer--hero {
+  left: 158px;
+  top:  125px;
+  z-index: var(--z-hero);
+}
+
+.hero__title {
+  font-family: var(--font-h);
+  font-size: 220px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.hero__sub {
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin-top: 8px;
+  max-width: 641px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EBENE 30 – Footer-Navigation
+═══════════════════════════════════════════════════════════════ */
+.layer--footer {
+  left: 0;
+  top:  10519px;
+  width:  100%;
+  z-index: var(--z-footer);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 129px;
+}
+
+.fbtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+}
+
+.fbtn--ki     { width: 1040px; color: #0E0E0E; }
+.fbtn--tiktok { width: 526px;  color: #0E0E0E; }
+.fbtn--tinder { width: 479px;  color: #FAFAFA; }
+
+.fbtn__bg,
+.fbtn__glitch {
+  position: absolute;
+  inset: 0;
+  width:  100%;
+  height: 100%;
+}
+
+.fbtn--ki .fbtn__bg path { fill: #F7730D; }
+
+.fbtn__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  padding: 0 34px;
+}
+
+.fbtn__label {
+  font-size: 71px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.fbtn__arrow {
+  width:  55px;
+  height: 55px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.fbtn__arrow--light {
+  filter: invert(1);
+}
+
+.fbtn--tiktok .fbtn__glitch--cyan { transform: translate(-12px, -10px); }
+.fbtn--tiktok .fbtn__glitch--red  { transform: translate(8px, 11px); }
+.fbtn--tiktok .fbtn__bg--rect     { z-index: 1; }

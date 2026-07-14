@@ -1,0 +1,932 @@
+/* KI Bilder & Deepfake – Figma Frame 760:152 (1440 × 10280 px) */
+
+@font-face {
+  font-family: 'Wellbutrin';
+  src: url('../assets/fonts/wellbutrin.ttf') format('truetype');
+  font-weight: normal;
+  font-style:  normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-text:         #0E0E0E;
+  --color-bg:           #f9f9f9;
+  --color-text-inverse: #FAFAFA;
+  --color-accent:       #ff8b43;
+  --color-accent-dim:   rgba(255, 139, 67, 0.3);
+
+  --font-heading: 'Wellbutrin', monospace;
+  --font-body:    'Jura', sans-serif;
+
+  --title-tracking:    0.012em;
+  --title-line-height: 1.05;
+
+  /* Radien wie auf der Hauptseite (style.css) – dort definiert, hier nicht geladen */
+  --radius-block: 10px;
+  --radius-pill:  20px;
+
+  --canvas-w: 1440;
+  --canvas-h: 16363;
+
+  /* Footer – statisch nach ki-help */
+  --footer-width: 720px;
+  --footer-block-h: calc(3 * 112px + 2 * 72px);
+  --footer-gap: 320px;
+  --footer-tail: 240px;
+  --footer-top: calc(10783px + 4560px + var(--footer-gap));
+  --footer-z: 10;
+
+  --nav-height:     160px;
+  --nav-label-size: 71px;
+  --nav-inner-gap:  50px;
+  --nav-arrow-size: 55px;
+
+  /* 12-Spalten-Raster (Figma: Margin 25 px, Gutter 24 px) */
+  --grid-margin: 25px;
+  --grid-gutter: 24px;
+  --grid-cols: 12;
+  --grid-content: calc(var(--canvas-w) * 1px - 2 * var(--grid-margin));
+  --grid-col: calc((var(--grid-content) - (var(--grid-cols) - 1) * var(--grid-gutter)) / var(--grid-cols));
+  --text-col-w: 784px;
+  --type-gap-foto: 149px;
+  --type-gap-audio: 217px;
+  --type-block-gap: 300px;
+  --page-height: calc(var(--canvas-h) * var(--page-scale) * 1px);
+
+  --z-bg:      1;
+  --z-mega:    5;
+  --z-content: 10;
+  --z-hero:   20;
+  --z-ui:    100;
+
+  --marquee-w: 181px;
+  --marquee-h: 211px;
+  --marquee-gap: 53px;
+  --marquee-count: 18;
+  --marquee-step: calc(var(--marquee-w) + var(--marquee-gap));
+  --marquee-set-w: calc(var(--marquee-step) * var(--marquee-count) - var(--marquee-gap));
+}
+
+html { font-size: 16px; overflow-x: hidden; background: var(--color-bg); }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: var(--page-height);
+}
+
+h1, h2 { font-weight: normal; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Viewport & Canvas ─────────────────────────────────────── */
+.viewport {
+  position: relative;
+  width: 100%;
+  height: var(--page-height);
+  overflow-x: hidden;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: var(--page-offset-x);
+  width:  calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
+  background: var(--color-bg);
+  transform: scale(var(--page-scale));
+  transform-origin: top left;
+}
+
+.layer { position: absolute; }
+
+/* ── Fixe UI ─────────────────────────────────────────────────── */
+.ui-back {
+  position: fixed;
+  background: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-ui);
+  transition: transform 0.3s ease;
+}
+
+.ui-back:hover {
+  transform: scale(1.05);
+}
+
+.ui-back:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.ui-back__arrow {
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: invert(1);
+  transform: scaleX(-1);
+  transition: transform 0.3s ease;
+}
+
+/* Pfeil rückt beim Hover leicht nach links (scaleX(-1) → +X ist visuell links) */
+.ui-back:hover .ui-back__arrow {
+  transform: scaleX(-1) translateX(2px);
+}
+
+/* ── Section-Transition Overrides (nach section-transition.css) ─ */
+.canvas .sec-trans--top { top: 6115px; }
+
+.canvas .sec-dark {
+  top: 6483px;
+  height: 2300px;
+}
+
+.canvas .sec-trans--bottom {
+  top: 8771px;
+  margin-top: -12px;
+}
+
+/* Pixel-Löcher als echte Ausschnitte */
+.canvas .sec-trans--top,
+.canvas .sec-trans--bottom {
+  isolation: isolate;
+}
+
+.canvas .sec-trans--top .sec-trans__holes,
+.canvas .sec-trans--bottom .sec-trans__holes {
+  mix-blend-mode: destination-out;
+  z-index: 1;
+}
+
+.canvas .sec-trans--top .sec-trans__hole,
+.canvas .sec-trans--bottom .sec-trans__hole {
+  background: #fff;
+}
+
+/* ── Hero (Telefon im Hintergrund, Titel im Vordergrund) ─────── */
+.ki-hero {
+  left: 0;
+  top: 0;
+  width: calc(var(--canvas-w) * 1px);
+  height: 1182px;
+  z-index: var(--z-bg);
+  pointer-events: none;
+}
+
+.ki-hero__phone {
+  position: absolute;
+  left: calc(8.33% + 78px);
+  top: 121px;
+  width: 1049px;
+  height: 787px;
+  margin: 0;
+}
+
+.ki-hero__phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ki-hero-titles {
+  left: 0;
+  top: 0;
+  width: calc(var(--canvas-w) * 1px);
+  height: 1182px;
+  z-index: var(--z-hero);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.ki-hero__title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  background: none;
+}
+
+.ki-hero__title--ki {
+  top: 32px;
+  width: 1304px;
+}
+
+.ki-hero__title--df {
+  top: 700px;
+  width: 1166px;
+}
+
+/* ── Intro: 3 Arten von Deepfakes ────────────────────────────── */
+.ki-intro {
+  left: 61px;
+  top: 1254px;
+  width: 1360px;
+  z-index: var(--z-content);
+}
+
+.ki-intro__bar {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ki-intro__title {
+  position: absolute;
+  left: calc(54.17% - 22px);
+  top: 279px;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: 64px;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Foto / Video / Audio – 12-Spalten-Ausrichtung ───────────── */
+.ki-type {
+  z-index: var(--z-content);
+}
+
+.ki-type__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--type-block-gap);
+  width: 100%;
+}
+
+.ki-type--foto .ki-type__inner {
+  align-items: flex-end;
+}
+
+.ki-type--video .ki-type__inner {
+  align-items: flex-start;
+}
+
+.ki-type--audio .ki-type__inner {
+  align-items: flex-end;
+  gap: 0;
+}
+
+.ki-type--foto {
+  left: var(--grid-margin);
+  top: 2190px;
+  width: 1375px;
+}
+
+.ki-type--video {
+  left: calc((var(--canvas-w) * 1px - 1397px) / 2);
+  top: 3753px;
+  width: 1397px;
+}
+
+.ki-type--audio {
+  left: var(--grid-margin);
+  top: 5316px;
+  width: 1396px;
+}
+
+.ki-type__row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ki-type--foto .ki-type__row {
+  gap: var(--type-gap-foto);
+  align-items: flex-start;
+}
+
+.ki-type--video .ki-type__row {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ki-type--audio .ki-type__row {
+  gap: var(--type-gap-audio);
+  align-items: flex-start;
+}
+
+.ki-type__label {
+  flex: 0 0 auto;
+  position: relative;
+  font-family: var(--font-heading);
+  font-size: 128px;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  white-space: nowrap;
+  /* Pixel-Font sitzt in seiner Zeilenbox tiefer als der Fließtext –
+     Label nach oben ziehen, damit die Buchstaben-Oberkanten bündig sind */
+  margin-top: -22px;
+}
+
+.ki-type__label-spacer {
+  flex: 0 0 auto;
+  display: block;
+}
+
+.ki-type__label.is-sticky-after {
+  transform: translate3d(0, var(--sticky-y, 0), 0);
+}
+
+.ki-type__label.is-pinned-fixed {
+  position: fixed;
+  margin: 0;
+  z-index: 200;
+  transform: none;
+  pointer-events: none;
+  font-family: var(--font-heading);
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.ki-sticky-portal {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.ki-type__text {
+  flex: 0 0 var(--text-col-w);
+  width: var(--text-col-w);
+  max-width: var(--text-col-w);
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+}
+
+/* Tablet-Mockup (Figma: 923 × 657, Screen 868 × 588 @ top 35) */
+.ki-tablet {
+  position: relative;
+  width: 923px;
+  height: 657px;
+  background: #1a1a1a;
+  border-radius: 44px;
+  flex-shrink: 0;
+}
+
+.ki-tablet__screen {
+  position: absolute;
+  left: 50%;
+  top: 35px;
+  transform: translateX(-50%);
+  width: 868px;
+  height: 588px;
+  overflow: hidden;
+  background: #0E0E0E;
+  border-radius: 28px;
+  /* erzwingt das Clipping des iframes an den runden Ecken (Safari) */
+  -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+  mask-image: radial-gradient(#fff, #000);
+}
+
+.ki-tablet__screen iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #0E0E0E;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+/* ── Dunkler Bereich – Texte ─────────────────────────────────── */
+.ki-stat {
+  left: 24px;
+  top: 6532px;
+  width: 784px;
+  font-family: var(--font-body);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  z-index: var(--z-content);
+}
+
+.ki-stat__count {
+  display: inline-block;
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.ki-quote {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1026px;
+  font-family: var(--font-body);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  text-align: center;
+  z-index: var(--z-content);
+}
+
+.ki-quote--mid { top: 7283px; }
+.ki-quote--bottom { top: 7942px; }
+
+/* ── Foto-Banner (Marquee) ───────────────────────────────────── */
+.photo-marquee {
+  overflow: hidden;
+  z-index: var(--z-content);
+}
+
+.photo-marquee--top { top: 6897px; }
+.photo-marquee--bottom { top: 7583px; }
+
+.photo-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: var(--marquee-gap);
+  width: max-content;
+  min-width: calc(var(--marquee-set-w) * 2);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.photo-marquee--top .photo-marquee__track.is-ready {
+  animation: marquee-left 55s linear infinite;
+}
+
+.photo-marquee--bottom .photo-marquee__track.is-ready {
+  animation: marquee-right 62s linear infinite;
+}
+
+.photo-marquee__item {
+  flex: 0 0 var(--marquee-w);
+  width: var(--marquee-w);
+  height: var(--marquee-h);
+  margin: 0;
+  overflow: hidden;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+
+.photo-marquee__item.is-error {
+  background: #2a2a2a;
+}
+
+.photo-marquee__item img,
+.photo-marquee__item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@keyframes marquee-left {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(calc(-1 * var(--marquee-set-w)), 0, 0); }
+}
+
+@keyframes marquee-right {
+  from { transform: translate3d(calc(-1 * var(--marquee-set-w)), 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-marquee__track.is-ready { animation: none; }
+  .ki-grid__cell {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Statistik-Grid (98 % Deepfakes) – einzige Section-Animation ─ */
+.ki-grid {
+  left: 24px;
+  top: 8348px;
+  width: 1392px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: var(--z-content);
+}
+
+.ki-grid__row {
+  display: flex;
+  gap: 15.945px;
+}
+
+.ki-grid__cell {
+  flex: 0 0 54.453px;
+  width: 54.453px;
+  height: 63.478px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--cell-delay, 0ms);
+}
+
+.ki-grid.is-visible .ki-grid__cell {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ki-grid__cell--dim {
+  background: var(--color-accent-dim);
+}
+
+/* ── Quiz: Traust du deinen Augen? (Figma y 10517–11870) ─────── */
+.ki-quiz {
+  left: 0;
+  top: 9560px;
+  width: calc(var(--canvas-w) * 1px);
+  height: 1000px;
+  z-index: var(--z-content);
+}
+
+.ki-quiz__title {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1394px;
+  font-family: var(--font-heading);
+  font-size: 96px;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* Fortschritts-Punkte – zeigen, wie viele Bilder noch kommen */
+.ki-quiz__progress {
+  position: absolute;
+  left: 50%;
+  top: 224px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ki-quiz__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--color-text);
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.ki-quiz__dot--done {
+  background: var(--color-text);
+}
+
+.ki-quiz__dot--current {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.35);
+}
+
+/* Bild-Karte – kompakter als in Figma, damit Fortschritt sichtbar bleibt */
+.ki-quiz__card {
+  position: absolute;
+  left: 50%;
+  top: 296px;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  margin: 0;
+  border-radius: var(--radius-block);
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.ki-quiz__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.ki-quiz__verdict {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 32px 34px;
+  font-family: var(--font-body);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: var(--title-tracking);
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0) 46%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.ki-quiz__card.is-revealed .ki-quiz__verdict { opacity: 1; }
+
+/* Antwort-Buttons (Figma Rectangle 201/202: 333/334 × 91 @ y 11779) */
+.ki-quiz__buttons {
+  position: absolute;
+  left: 50%;
+  top: 836px;
+  transform: translateX(-50%);
+  width: 500px;
+  display: flex;
+  gap: 24px;
+}
+
+.ki-quiz__btn {
+  flex: 1 1 0;
+  height: 91px;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: var(--title-tracking);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease,
+    border-color 0.18s ease, opacity 0.18s ease;
+}
+
+.ki-quiz__btn:hover:not(:disabled) {
+  background: var(--color-text);
+  color: var(--color-text-inverse);
+}
+
+.ki-quiz__btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.ki-quiz__btn:disabled { cursor: default; }
+
+.ki-quiz__btn--truth {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #0E0E0E;
+}
+
+.ki-quiz__btn--miss {
+  opacity: 0.3;
+}
+
+/* Endkarte – die Auflösung */
+.ki-quiz__result {
+  position: absolute;
+  left: 50%;
+  top: 296px;
+  transform: translateX(-50%);
+  width: 1040px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+}
+
+.ki-quiz__result[hidden] { display: none; }
+
+.ki-quiz__result-head {
+  font-family: var(--font-heading);
+  font-size: 72px;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+}
+
+.ki-quiz__result-head em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.ki-quiz__result-sub {
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  max-width: 780px;
+}
+
+.ki-quiz__retry {
+  height: 91px;
+  padding: 0 56px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--color-accent);
+  color: #0E0E0E;
+  font-family: var(--font-body);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: var(--title-tracking);
+  cursor: pointer;
+  transition: filter 0.18s ease;
+}
+
+.ki-quiz__retry:hover { filter: brightness(1.06); }
+
+.ki-quiz.is-finished .ki-quiz__card,
+.ki-quiz.is-finished .ki-quiz__buttons,
+.ki-quiz.is-finished .ki-quiz__progress { display: none; }
+
+/* ── Was kann ich tun? – Überschrift + Fragen mit Andock-/Goo-Effekt ─ */
+.ki-help {
+  left: 0;
+  top: 10783px;
+  width: calc(var(--canvas-w) * 1px);
+  height: 4560px;
+  z-index: var(--z-content);
+}
+
+/* Goo-Gruppen: schwarze Formen, die per Filter zu einer flüssigen
+   Form verschmelzen (Verbindungseffekt). Text liegt separat darüber. */
+.ki-help__goo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* eigene GPU-Ebene → SVG-Filter flackert nicht bei fremden Repaints (Hover) */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.ki-help__pill,
+.ki-help__box {
+  position: absolute;
+  background: var(--color-text);
+}
+
+/* Überschrift-Blob: dasselbe Pixel-Element wie „Arten von Deepfakes" */
+.ki-help__bar-img {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1360px;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 1;
+}
+
+.ki-help__heading {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1360px;
+  height: 590px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 84px;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  text-align: center;
+  z-index: 2;
+}
+
+/* ── Frage-Block (Pill + Textfeld) – wiederholbar ─────────────── */
+.ki-help__qa {
+  position: absolute;
+  left: 0;
+  width: calc(var(--canvas-w) * 1px);
+  height: 1000px;
+  /* Pin-Versatz der Pill (per Scroll in ki.js); Pill-Breite; Start-Abstand
+     der Box unter der Pill (größer = größerer Anfangsabstand) */
+  --pill-y: 0px;
+  --pill-w: 822px;
+  --box-top: 560px;
+  --box-left: 611px;
+  --box-w: 805px;
+  --box-h: 392px;
+}
+
+.ki-help__qa--wide {
+  --pill-w: 1120px;
+  --box-left: 500px;
+  --box-w: 916px;
+  --box-h: 520px;
+  height: 1120px;
+}
+
+/* Frage-Goo nur im Ruhezustand einschalten: während der Pin-Bewegung
+   ist der Filter aus (sonst Schlieren), erst beim Andocken verschmilzt es */
+.ki-help__qa.is-connected .ki-help__goo--qa { filter: url(#section-goo); }
+
+/* Unterüberschrift-Pill (oben links) */
+.ki-help__pill {
+  left: 24px;
+  top: 0;
+  width: var(--pill-w);
+  height: 150px;
+  border-radius: 60px;
+  transform: translateY(var(--pill-y));
+}
+
+/* Textfeld-Box (unten rechts) – startet losgelöst unter der Pill */
+.ki-help__box {
+  left: var(--box-left);
+  top: var(--box-top);
+  width: var(--box-w);
+  height: var(--box-h);
+  border-radius: 44px;
+}
+
+.ki-help__sub {
+  position: absolute;
+  left: 24px;
+  top: 0;
+  width: var(--pill-w);
+  height: 150px;
+  display: flex;
+  align-items: center;
+  padding: 0 72px;
+  font-family: var(--font-body);
+  font-size: 64px;
+  font-weight: 600;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  white-space: nowrap;
+  transform: translateY(var(--pill-y));
+  z-index: 2;
+}
+
+/* Text liegt über der Box; beide bilden ein Objekt und scrollen normal
+   mit der Seite zur gepinnten Unterüberschrift hoch */
+.ki-help__field {
+  position: absolute;
+  left: var(--box-left);
+  top: var(--box-top);
+  width: var(--box-w);
+  height: var(--box-h);
+  padding: 44px 48px 44px 56px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ki-help__field p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+}
+
+
+.layer--footer .fbtn--instagram { color: #FAFAFA; }
+.layer--footer .fbtn--tiktok     { color: #0E0E0E; }
+.layer--footer .fbtn--tinder     { color: #FAFAFA; }

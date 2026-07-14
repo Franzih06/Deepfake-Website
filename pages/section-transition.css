@@ -1,0 +1,77 @@
+/* Pixel-Skyline Section-Übergang (Port von Section-Uebergang.html) */
+
+.sec-trans {
+  left: 0;
+  width: calc(var(--canvas-w) * 1px);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-mega);
+  background: var(--sec-top, var(--color-bg));
+}
+
+.sec-trans__sky {
+  position: absolute;
+  inset: 0;
+  filter: url(#section-goo);
+  -webkit-filter: url(#section-goo);
+}
+
+.sec-trans__bar,
+.sec-trans__float {
+  position: absolute;
+  background: var(--sec-dark, #0E0E0E);
+  border-radius: 5px;
+}
+
+.sec-trans__holes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sec-trans__hole {
+  position: absolute;
+  background: var(--sec-top, var(--color-bg));
+  border-radius: 5px;
+}
+
+.sec-trans--top {
+  top: 6410px;
+}
+
+.sec-trans--bottom {
+  top: 9953px;
+  margin-top: -12px; /* nahtlos an dunkle Sektion anschließen (wie Original) */
+  /* transparent statt hell → an der Überlappung scheint die dunkle Section
+     durch (kein heller Seam), darunter der helle Canvas */
+  background: transparent;
+}
+
+/* Dunkle Sektion mit ausgeschnittenen Content-Fenstern (ersetzt Viereck6) */
+.sec-dark {
+  left: 0;
+  top: 6938px;
+  width: calc(var(--canvas-w) * 1px);
+  height: 3027px;
+  z-index: var(--z-mega);
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.sec-dark__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--sec-dark, #0E0E0E);
+}
+
+.sec-dark__holes {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: destination-out;
+}
+
+.sec-dark__hole {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+}

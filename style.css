@@ -1,0 +1,735 @@
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS – Figma frame „Hauptseite" (616:1067)
+   Canvas: 7140 × 1440 px – dark theme
+═══════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Dotmax Demo';
+  src: url('assets/fonts/dotmax-demo.regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style:  normal;
+  font-display: swap;
+}
+
+:root {
+  --color-text:        #FAFAFA;
+  --color-bg:          #0E0E0E;
+  --color-placeholder: #D9D9D9;
+
+  --font-heading: 'Dotmax Demo', monospace;
+  --font-body:    'Jura', sans-serif;
+
+  --space-1:  8px;
+  --space-2:  16px;
+  --space-3:  24px;
+  --space-4:  32px;
+  --space-5:  48px;
+
+  --radius-block: 10px;
+  --radius-pill:  20px;
+
+  --canvas-width:  7140;
+  --canvas-height: 1440;
+
+  --nav-height:     160px;
+  --nav-label-size: 71px;
+  --nav-inner-gap:  50px;
+  --nav-arrow-size: 55px;
+
+  --title-size:        521.552px;
+  --title-top:         306px;
+  --title-width:       6897.521px;
+  --title-tracking:    0.02em;
+  --title-line-height: 1.05;
+
+  --caption-bottom: 56px;
+  /* Figma 48 px, scaled to viewport height like the canvas */
+  --caption-size: calc(48px * 100vh / var(--canvas-height));
+
+  --photo-scale: 1;
+
+  --transition-fast: 0.2s ease;
+
+  /* Stacking: 1 = headline, 2 = photos, 3 = buttons */
+  --layer-text:   1;
+  --layer-photos: 2;
+  --layer-nav:    3;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+img  { display: block; max-width: 100%; }
+svg  { display: block; }
+a    { text-decoration: none; color: inherit; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HORIZONTAL SCROLL VIEWPORT
+═══════════════════════════════════════════════════════════════ */
+
+.scroll-viewport {
+  position: relative;
+  z-index: 2;
+  width:  100vw;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 250, 250, 0.2) transparent;
+}
+
+.scroll-viewport::-webkit-scrollbar       { height: 6px; }
+.scroll-viewport::-webkit-scrollbar-thumb { background: rgba(250, 250, 250, 0.2); border-radius: 3px; }
+
+.scroll-inner {
+  position: relative;
+  height: 100vh;
+}
+
+.hero-canvas {
+  position: absolute;
+  top:  0;
+  left: 0;
+  width:  calc(var(--canvas-width) * 1px);
+  height: calc(var(--canvas-height) * 1px);
+  background: transparent;
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO TITLE & CAPTION
+═══════════════════════════════════════════════════════════════ */
+
+.hero-title {
+  position: absolute;
+  left: 50%;
+  top:  var(--title-top);
+  transform: translateX(calc(-50% - 0.24px));
+  width:  var(--title-width);
+  font-family: var(--font-heading);
+  font-size:   var(--title-size);
+  font-weight: normal;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  text-align: center;
+  color: var(--color-text);
+  white-space: nowrap;
+  z-index: var(--layer-text);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.hero-caption {
+  position: fixed;
+  left: 50%;
+  bottom: var(--caption-bottom);
+  transform: translateX(-50%);
+  max-width: min(1007px, calc(100vw - 96px));
+  font-family: var(--font-body);
+  font-size:   var(--caption-size);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.012em;
+  text-align: center;
+  color: var(--color-text);
+  z-index: 1;
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PHOTO TILES
+═══════════════════════════════════════════════════════════════ */
+
+.photo-layer {
+  position: absolute;
+  inset: 0;
+  z-index: var(--layer-photos);
+  pointer-events: none;
+}
+
+.photo-tile {
+  position: absolute;
+  border-radius: var(--radius-block);
+  overflow: hidden;
+  background: var(--color-placeholder);
+  will-change: transform;
+}
+
+.photo-tile img,
+.photo-tile video {
+  width:  100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   NAV BUTTONS
+═══════════════════════════════════════════════════════════════ */
+
+.hero-nav {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.nav-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--nav-height);
+  text-decoration: none;
+  pointer-events: auto;
+  will-change: transform;
+  transition: filter var(--transition-fast);
+}
+
+.nav-btn:hover  { filter: brightness(1.06); }
+.nav-btn:active { filter: brightness(0.96); }
+
+.nav-btn-wrap--ki .nav-btn:hover,
+.nav-btn-wrap--ki .nav-btn:active {
+  filter: none;
+}
+
+.nav-btn-wrap--ki {
+  position: absolute;
+  left: 653px;
+  top: 820px;
+  width: 1040px;
+  z-index: var(--layer-nav);
+  pointer-events: auto;
+  will-change: transform;
+
+  --ki-card-w: 977px;
+  --ki-card-h: 584px;
+  --ki-card-pad-x: 40px;
+  --ki-bar-h: 160px;
+  --ki-hover-scale: 0.94;
+  --ki-hover-dur: 0.38s;
+  --ki-hover-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  height: var(--ki-bar-h);
+  overflow: hidden;
+  transition: height var(--ki-hover-dur) var(--ki-hover-ease);
+}
+
+.nav-btn-wrap--ki:hover,
+.nav-btn-wrap--ki:focus-within {
+  height: calc(var(--ki-card-h) * var(--ki-hover-scale));
+  overflow: visible;
+  z-index: calc(var(--layer-nav) + 5);
+}
+
+.nav-btn--ki {
+  position: relative;
+  display: block;
+  inset: auto;
+  width: 100%;
+  height: var(--ki-card-h);
+  left: auto;
+  top: auto;
+  color: #0E0E0E;
+}
+
+.nav-btn__ki-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--ki-card-h);
+  transform-origin: top center;
+  transform: scale(1);
+  transition: transform var(--ki-hover-dur) var(--ki-hover-ease);
+}
+
+.nav-btn-wrap--ki:hover .nav-btn__ki-frame,
+.nav-btn-wrap--ki:focus-within .nav-btn__ki-frame {
+  transform: scale(var(--ki-hover-scale));
+}
+
+.nav-btn__ki-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--ki-card-w);
+  height: var(--ki-card-h);
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Eingeklappt: untere Ecken der sichtbaren Leiste abrunden (20px wie SVG) */
+.nav-btn-wrap--ki:not(:hover):not(:focus-within) .nav-btn__ki-bg {
+  clip-path: inset(0 0 calc(var(--ki-card-h) - var(--ki-bar-h)) 0 round 0 0 20px 20px);
+  transition: clip-path var(--ki-hover-dur) var(--ki-hover-ease);
+}
+
+.nav-btn-wrap--ki:hover .nav-btn__ki-bg,
+.nav-btn-wrap--ki:focus-within .nav-btn__ki-bg {
+  clip-path: none;
+}
+
+.nav-btn__ki-title,
+.nav-btn__ki-text {
+  position: absolute;
+  left: calc(50% - var(--ki-card-w) / 2 + var(--ki-card-pad-x));
+  pointer-events: none;
+}
+
+.nav-btn__ki-title {
+  top: 52px;
+  font-family: var(--font-body);
+  font-size: var(--nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+}
+
+.nav-btn__ki-text {
+  top: 168px;
+  width: 610px;
+  font-family: var(--font-body);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.008em;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.28s ease 0.1s,
+    visibility 0s linear calc(var(--ki-hover-dur) + 0.1s);
+}
+
+.nav-btn-wrap--ki:hover .nav-btn__ki-text,
+.nav-btn-wrap--ki:focus-within .nav-btn__ki-text {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.28s ease 0.1s,
+    visibility 0s;
+}
+
+/* CTA auf dem unteren Fortsatz der Karte (602 × 137) */
+.nav-btn__ki-cta {
+  position: absolute;
+  left: calc(50% - var(--ki-card-w) / 2 + 312px);
+  top: 431px;
+  width: 602px;
+  height: 137px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.28s ease 0.16s,
+    visibility 0s linear calc(var(--ki-hover-dur) + 0.1s);
+}
+
+.nav-btn-wrap--ki:hover .nav-btn__ki-cta,
+.nav-btn-wrap--ki:focus-within .nav-btn__ki-cta {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.28s ease 0.16s,
+    visibility 0s;
+}
+
+.nav-btn__ki-cta-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+.nav-btn__ki-cta-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  color: #F7730D;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-btn__ki-cta-arrow {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+  background: #F7730D;
+  -webkit-mask: url(assets/nav/arrow-button.png) center / contain no-repeat;
+  mask: url(assets/nav/arrow-button.png) center / contain no-repeat;
+  pointer-events: none;
+}
+
+/* Instagram – 598 px Leiste, Hover-Karte (977 × 584) zentriert darüber */
+.nav-btn-wrap--instagram .nav-btn:hover,
+.nav-btn-wrap--instagram .nav-btn:active {
+  filter: none;
+}
+
+.nav-btn-wrap--instagram {
+  position: absolute;
+  left: 2800px;
+  top: 798px;
+  width: 598px;
+  z-index: var(--layer-nav);
+  pointer-events: auto;
+  will-change: transform;
+
+  --ig-card-w: 977px;
+  --ig-card-h: 584px;
+  --ig-card-pad-x: 40px;
+  --ig-bar-h: 160px;
+  --ig-hover-scale: 0.94;
+  --ig-hover-dur: 0.38s;
+  --ig-hover-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  height: var(--ig-bar-h);
+  overflow: hidden;
+  transition: height var(--ig-hover-dur) var(--ig-hover-ease);
+}
+
+.nav-btn-wrap--instagram:hover,
+.nav-btn-wrap--instagram:focus-within {
+  height: calc(var(--ig-card-h) * var(--ig-hover-scale));
+  overflow: visible;
+  z-index: calc(var(--layer-nav) + 5);
+}
+
+.nav-btn--instagram {
+  position: relative;
+  display: block;
+  inset: auto;
+  width: 100%;
+  height: var(--ig-card-h);
+  left: auto;
+  top: auto;
+  color: #FAFAFA;
+}
+
+.nav-btn__ig-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--ig-card-h);
+  transform-origin: top center;
+  transform: scale(1);
+  transition: transform var(--ig-hover-dur) var(--ig-hover-ease);
+}
+
+.nav-btn-wrap--instagram:hover .nav-btn__ig-frame,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-frame {
+  transform: scale(var(--ig-hover-scale));
+}
+
+/* Eingeklappt: originaler 598 px Instagram-Button */
+.nav-btn__ig-collapsed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: var(--ig-bar-h);
+  z-index: 3;
+  transition: opacity 0.18s ease, visibility 0s;
+}
+
+.nav-btn__ig-bar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.nav-btn__ig-bar-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nav-inner-gap);
+  height: var(--ig-bar-h);
+  padding: 0 var(--space-4);
+}
+
+.nav-btn__ig-bar-label {
+  font-family: var(--font-body);
+  font-size: var(--nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-btn__ig-bar-arrow {
+  width: var(--nav-arrow-size);
+  height: var(--nav-arrow-size);
+  flex-shrink: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: invert(1);
+  pointer-events: none;
+}
+
+.nav-btn-wrap--instagram:hover .nav-btn__ig-collapsed,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-collapsed {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0s linear var(--ig-hover-dur);
+}
+
+/* Aufgeklappt: volle Hover-Karte, zentriert auf dem Button */
+.nav-btn__ig-bg,
+.nav-btn__ig-title,
+.nav-btn__ig-text,
+.nav-btn__ig-cta {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.nav-btn__ig-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--ig-card-w);
+  height: var(--ig-card-h);
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.28s ease 0.08s, visibility 0s linear calc(var(--ig-hover-dur) + 0.08s);
+}
+
+.nav-btn__ig-title,
+.nav-btn__ig-text {
+  position: absolute;
+  left: calc(50% - var(--ig-card-w) / 2 + var(--ig-card-pad-x));
+  pointer-events: none;
+}
+
+.nav-btn__ig-title {
+  top: 52px;
+  font-family: var(--font-body);
+  font-size: var(--nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+  transition: opacity 0.28s ease 0.1s, visibility 0s linear calc(var(--ig-hover-dur) + 0.1s);
+}
+
+.nav-btn__ig-text {
+  top: 168px;
+  width: 610px;
+  font-family: var(--font-body);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.008em;
+  text-align: left;
+  transition: opacity 0.28s ease 0.1s, visibility 0s linear calc(var(--ig-hover-dur) + 0.1s);
+}
+
+.nav-btn__ig-cta {
+  position: absolute;
+  left: calc(50% - var(--ig-card-w) / 2 + 312px);
+  top: 431px;
+  width: 602px;
+  height: 137px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transition: opacity 0.28s ease 0.16s, visibility 0s linear calc(var(--ig-hover-dur) + 0.1s);
+}
+
+.nav-btn-wrap--instagram:hover .nav-btn__ig-bg,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-bg,
+.nav-btn-wrap--instagram:hover .nav-btn__ig-title,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-title,
+.nav-btn-wrap--instagram:hover .nav-btn__ig-text,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-text,
+.nav-btn-wrap--instagram:hover .nav-btn__ig-cta,
+.nav-btn-wrap--instagram:focus-within .nav-btn__ig-cta {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.28s ease 0.1s,
+    visibility 0s;
+}
+
+.nav-btn__ig-cta-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+.nav-btn__ig-cta-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  color: #FAFAFA;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-btn__ig-cta-arrow {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+  background: #FAFAFA;
+  -webkit-mask: url(assets/nav/arrow-button.png) center / contain no-repeat;
+  mask: url(assets/nav/arrow-button.png) center / contain no-repeat;
+  pointer-events: none;
+}
+
+.nav-btn:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-pill);
+}
+
+/* Figma positions */
+.nav-btn--tiktok     { left: 4162px;  top: 424px;  width: 526px;  color: #0E0E0E; }
+.nav-btn--tinder     { left: 5878px;  top: 863px;  width: 479px;  color: #FAFAFA; }
+
+.nav-btn__bg,
+.nav-btn__glitch {
+  position: absolute;
+  inset: 0;
+  width:  100%;
+  height: 100%;
+}
+
+.nav-btn__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nav-inner-gap);
+  padding: 0 var(--space-4);
+}
+
+.nav-btn__label {
+  font-family: var(--font-body);
+  font-size:   var(--nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.nav-btn__arrow {
+  width:  var(--nav-arrow-size);
+  height: var(--nav-arrow-size);
+  flex-shrink: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.nav-btn--instagram .nav-btn__arrow,
+.nav-btn--tinder .nav-btn__arrow {
+  filter: invert(1);
+}
+.nav-btn--tiktok .nav-btn__glitch--cyan { transform: translate(-12px, -10px); }
+.nav-btn--tiktok .nav-btn__glitch--red  { transform: translate(8px, 11px); }
+.nav-btn--tiktok .nav-btn__bg--rect     { z-index: 1; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-tile,
+  .nav-btn,
+  .nav-btn-wrap--ki,
+  .nav-btn-wrap--instagram,
+  .hero-title,
+  .hero-caption {
+    transition: none;
+  }
+
+  .nav-btn-wrap--ki,
+  .nav-btn-wrap--instagram {
+    transition: none;
+    overflow: visible;
+  }
+
+  .nav-btn-wrap--ki {
+    height: calc(var(--ki-card-h) * var(--ki-hover-scale));
+  }
+
+  .nav-btn-wrap--instagram {
+    height: calc(var(--ig-card-h) * var(--ig-hover-scale));
+  }
+
+  .nav-btn__ki-frame,
+  .nav-btn__ig-frame {
+    transition: none;
+    transform: scale(var(--ki-hover-scale));
+  }
+
+  .nav-btn-wrap--instagram .nav-btn__ig-frame {
+    transform: scale(var(--ig-hover-scale));
+  }
+
+  .nav-btn__ki-text,
+  .nav-btn__ki-cta,
+  .nav-btn__ig-bg,
+  .nav-btn__ig-title,
+  .nav-btn__ig-text,
+  .nav-btn__ig-cta {
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+  }
+
+  .nav-btn-wrap--instagram:hover .nav-btn__ig-collapsed,
+  .nav-btn-wrap--instagram:focus-within .nav-btn__ig-collapsed {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

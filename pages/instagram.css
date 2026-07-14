@@ -1,0 +1,807 @@
+/* ═══════════════════════════════════════════════════════════════
+   Instagram 2 – Stylesheet
+   ═══════════════════════════════════════════════════════════════
+   Figma-Quelle: Frame 690:1376 (1440 × 11525 px)
+
+   Layout-Prinzip:
+   ───────────────
+   Alle Inhalte liegen in einem absolut positionierten Canvas (1440px breit).
+   Der Canvas wird per transform: scale() auf die Viewport-Breite skaliert.
+   Fixe UI-Elemente (Zurück, Progress, Burger) liegen AUSSERHALB des Canvas
+   und nutzen calc(X * 100vw / 1440) für proportionale Positionierung.
+
+   Typografie (invertiert zur Startseite):
+   ───────────────────────────────────────
+   Hintergrund hell (#f9f9f9), Fließtext dunkel (#0E0E0E).
+   Auf schwarzen Pixel-Flächen: Text hell (#FAFAFA).
+   Wellbutrin → große Titel (Hero, Übergänge)
+   Jura         → Fließtext, Blob-Zeilen, Post-UI, Navigation
+
+   Z-Index-Stack (unten → oben):
+   ─────────────────────────────
+   z1   --z-df-bg   Deepfake-Screenshots (Parallax-Hintergrund)
+   z4   --z-footer-under  Footer unter sec-dark (scrollt hervor)
+   z4   --z-blob    Info-FAQ Akkordeon
+   z5   --z-mega    Viereck6 schwarze Maske
+   z8   --z-titles  Text auf schwarzem Blob
+   z10  --z-posts   Instagram-Feed
+   z12  --z-trans   „Vom KI-Influencer“
+   z15  --z-teaser  Teaser „Dein lieblings-Influencer“
+   z20  --z-df-txt  WhiteViereck-Karten + „zum Deepfake“
+   z25  --z-hero    Hero-Bereich
+   z100 --z-ui      Fixe UI-Controls
+═══════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Wellbutrin';
+  src: url('../assets/fonts/wellbutrin.ttf') format('truetype');
+  font-weight: normal;
+  font-style:  normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── Farben (Startseite invertiert) ─────────────────────── */
+  --color-text:          #0E0E0E;   /* Fließtext auf hellem Grund */
+  --color-bg:            #f9f9f9;   /* Seitenhintergrund */
+  --color-text-inverse:  #FAFAFA;   /* Text auf schwarzen Pixel-Blobs */
+
+  /* ── Schriftarten ─────────────────────────────────────────── */
+  --font-heading: 'Wellbutrin', monospace;
+  --font-body:    'Jura', sans-serif;
+
+  --title-tracking:    0.02em;
+  --title-line-height: 1.05;
+
+  /* ── Footer-Button-Maße (wie Startseite) ─────────────────── */
+  --nav-height:     160px;
+  --nav-label-size: 71px;
+  --nav-inner-gap:  50px;
+  --nav-arrow-size: 55px;
+
+  /* ── Canvas & Skalierung ──────────────────────────────────── */
+  --body:   24px;                   /* Standard-Fließtextgröße */
+  --canvas-w: 1440;                 /* Figma-Frame-Breite (ohne px für calc) */
+
+  /* ── Instagram-Feed-Positionierung ──────────────────────────
+     Etwas breiter als 1/3 Frame, rechts mit 20 px Abstand.
+     Blob überlappt weiterhin den linken Post-Rand. */
+  --posts-scale:  1.12;
+  --posts-pad-r:  20;
+  --posts-w:      calc(var(--canvas-w) / 3 * var(--posts-scale) * 1px);
+  --posts-left:   calc((var(--canvas-w) - var(--canvas-w) / 3 * var(--posts-scale) - var(--posts-pad-r)) * 1px);
+
+  /* ── Post-Frame-Zusammenbau (3 Teile pro Post) ───────────────
+     Head  113 px → Avatar, Username, Drei-Punkte-Menü (HTML/CSS)
+     Media 746 px → Bild/Video-Slot (quadratisch im Design)
+     Foot  117 px → Like, Kommentar, Teilen, Speichern
+     Summe 976 px → aspect-ratio der .post__card */
+  --post-frame-w: 746;
+  --post-frame-h: 976;
+  --post-head-h:  113;
+  --post-media-h: 746;
+  --post-foot-h:  117;
+
+  /* ── Z-Index-Ebenen (siehe Dateikopf) ─────────────────────── */
+  --z-df-bg:   1;
+  --z-mega:    5;
+  --z-footer-under: 4;  /* Footer unter sec-dark – scrollt hervor */
+  --z-blob:   11;  /* über Feed – schwarzer Blob überlappt Posts von links */
+  --z-titles:  8;
+  --z-posts:  10;
+  --z-trans:  12;
+  --z-teaser: 15;
+  --z-df-txt: 20;
+  --z-hero:   25;
+  --z-footer: 30;
+  --z-ui:    100;
+
+  /* Teaser-Frame – volle Canvas-Breite, vertikal zwischen Hero und Feed */
+  --teaser-w:   1440;
+  --teaser-h:   351;
+  --teaser-top: calc((491px + 1453px - var(--teaser-h) * 1px) / 2);
+
+  /* Übergangs-Block „Vom KI-Influencer“ – Titel, Pixel-Transition und
+     dunkle Sektion gemeinsam verschieben (nicht nur den Titel isoliert). */
+  --ig-sec-anchor:      4942px;
+  --ig-sec-shift:       -200px;
+  --ig-sec-title-inset: 400px;
+  --ig-sec-dark-anchor: 5470px;
+
+  /* Reel links (Sexualisierung) – gleiche Viereck4-Maske wie df-post, kleiner */
+  --ig-reel-hole-x: 14px;
+  --ig-reel-w: 660px;
+  --ig-reel-drop: 570px;
+  --ig-sec-dark-tail: 120px;  /* Leerraum nach Reel, vor Pixel-Übergang */
+  --ig-sec-trans-overlap: 12px;
+  --ig-sec-trans-h: 540px;      /* 6 Zeilen × (1440/16) – section-transition.js */
+  --ig-sec-dark-h: calc(
+    7295px + var(--ig-reel-drop) + var(--ig-sec-dark-tail) - var(--ig-sec-dark-anchor)
+  );
+  /* Unterkante Cutout = Unterkante df-card-b + drop */
+  --ig-reel-hole-y: calc(
+    7295px + var(--ig-reel-drop) - var(--ig-sec-dark-anchor) - var(--ig-reel-w) * 864 / 724
+  );
+
+  /* Footer unter sec-dark (z4), volle Block-Höhe versteckt → herausscrollen */
+  --ig-footer-block-h: calc(3 * 112px + 2 * 56px);
+  --ig-footer-underlap: var(--ig-footer-block-h);
+  --ig-footer-scroll-extra: 240px; /* zusätzlich in den hellen Bereich raus */
+  --ig-footer-width: 720px;
+  /* Fallback – wird in instagram.js aus Footer + Viewport neu berechnet */
+  --canvas-h: 9200;
+  --page-height: calc(var(--canvas-h) * var(--page-scale) * 1px);
+}
+
+html {
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  font-weight: inherit; /* Wellbutrin wirkt nur mit normal, nicht bold */
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: var(--page-height); /* Scroll-Höhe = skalierte Canvas-Höhe */
+}
+
+img, video { display: block; max-width: none; }
+svg  { display: block; }
+a    { text-decoration: none; color: inherit; }
+
+/* Pixel-Art-Assets sollen beim Canvas-Scale nicht weichgezeichnet werden */
+.layer--df-post {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Viewport & Canvas – Responsive Skalierung
+   ═══════════════════════════════════════════════════════════════
+   .viewport  = sichtbarer Bereich, Höhe = skalierte Figma-Höhe
+   .canvas    = 1440×11525 px, 16:9-Skalierung (page-scale.css)
+   Alle .layer-Kinder nutzen absolute Figma-Koordinaten (top/left in px).
+═══════════════════════════════════════════════════════════════ */
+.viewport {
+  position: relative;
+  width: 100%;
+  height: var(--page-height);
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: var(--page-offset-x);
+  width:  calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
+  background: var(--color-bg);
+  overflow: visible;
+  transform: scale(var(--page-scale));
+  transform-origin: top left;
+  will-change: transform;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Fixe UI – außerhalb des Canvas, skaliert mit page-scale.css
+═══════════════════════════════════════════════════════════════ */
+
+/* Zurück-Button – schwarzes Quadrat mit weißem Pfeil */
+.ui-back {
+  position: fixed;
+  background: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-ui);
+  transition: transform 0.3s ease;
+}
+
+.ui-back:hover {
+  transform: scale(1.05);
+}
+
+.ui-back:focus-visible {
+  outline: 3px solid var(--color-accent, #ff8b43);
+  outline-offset: 3px;
+}
+
+.ui-back__arrow {
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: invert(1);
+  transform: scaleX(-1);
+  transition: transform 0.3s ease;
+}
+
+.ui-back:hover .ui-back__arrow {
+  transform: scaleX(-1) translateX(2px);
+}
+
+/* ── Basis für alle Canvas-Layer ───────────────────────────── */
+.layer { position: absolute; }
+
+
+/* section-transition.css wird auch von ki.html genutzt (gemeinsame Datei) –
+   die dortigen top-Werte (6410/6938/9953) dürfen nicht direkt geändert
+   werden. Stattdessen hier mit höherer Spezifität überschrieben, um den
+   Leerraum vor „Vom KI-Influencer“ um 1468px zu kürzen (nur auf dieser Seite;
+   etwas weniger als ursprünglich, damit der Info-Blob beim Loslösen nicht
+   mit dem Titel überlappt). */
+.canvas .sec-trans--top    { top: calc(var(--ig-sec-anchor) + var(--ig-sec-shift)); background: transparent; } /* transparent, damit der Titel dahinter durch die Lücken der Pixel-Silhouette scheint statt hart abgeschnitten zu werden */
+.canvas .sec-dark          { top: calc(var(--ig-sec-dark-anchor) + var(--ig-sec-shift)); height: var(--ig-sec-dark-h); }
+/* Pixel-Skyline dunkel → hell – über Footer (z4), Footer scrollt darunter hervor */
+.canvas .sec-trans--bottom {
+  top: calc(var(--ig-sec-dark-anchor) + var(--ig-sec-shift) + var(--ig-sec-dark-h) - var(--ig-sec-trans-overlap));
+  margin-top: calc(-1 * var(--ig-sec-trans-overlap));
+  background: transparent;
+  z-index: var(--z-trans);
+}
+
+/* Pixel-Löcher als echte Ausschnitte (nicht sec-top-Farbe) */
+.canvas .sec-trans--top,
+.canvas .sec-trans--bottom {
+  isolation: isolate;
+}
+
+.canvas .sec-trans--top .sec-trans__holes,
+.canvas .sec-trans--bottom .sec-trans__holes {
+  mix-blend-mode: destination-out;
+  z-index: 1;
+}
+
+.canvas .sec-trans--top .sec-trans__hole,
+.canvas .sec-trans--bottom .sec-trans__hole {
+  background: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Deepfake-Sektion – Parallax-Hintergrund (z1)
+   ═══════════════════════════════════════════════════════════════
+   df-reel liegt als eigener Layer ÜBER sec-dark (links bei Sexualisierung).
+   df-post trägt seine eigene Pixel-Silhouette (Viereck4.png)
+   Info-Akkordeon) und liegt daher ÜBER der dunklen Fläche – kein
+   contentHole nötig, dadurch kompakt statt eines riesigen Rechtecks.
+   Bewegung: instagram.js → updateParallax() mit data-parallax-y.
+═══════════════════════════════════════════════════════════════ */
+.layer--df-post {
+  left: 759px;   /* Figma: Bildschirmfoto @ (759, 7316), um 1468px nach oben verschoben */
+  top:  calc(5848px + var(--ig-sec-shift));
+  width:  600px;
+  height: calc(600px * 864 / 724); /* Seitenverhältnis von Viereck4.png */
+  object-fit: cover;
+  object-position: 50% 40%; /* Screenshot enthält Status-/Navileiste oben – auf Header+Foto zentrieren */
+  -webkit-mask-image: url('../assets/pixel/Viereck4.png');
+  mask-image: url('../assets/pixel/Viereck4.png');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  z-index: var(--z-titles);
+  will-change: transform;
+}
+
+/* Reel-Video – links bei „Sexualisierung“, Viereck4-Cutout wie KI Promis */
+.layer--df-reel {
+  left: var(--ig-reel-hole-x);
+  top: calc(var(--ig-sec-dark-anchor) + var(--ig-sec-shift) + var(--ig-reel-hole-y));
+  width: var(--ig-reel-w);
+  height: calc(var(--ig-reel-w) * 864 / 724); /* Seitenverhältnis Viereck4.png */
+  object-fit: cover;
+  object-position: 50% 40%;
+  -webkit-mask-image: url('../assets/pixel/Viereck4.png');
+  mask-image: url('../assets/pixel/Viereck4.png');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  z-index: var(--z-titles);
+  will-change: transform;
+}
+
+/* GPU-Beschleunigung; tatsächlicher Offset kommt aus JS */
+.parallax-df {
+  transform: translate3d(0, 0, 0);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Deepfake-Sektion – Parallax-Hintergrund (z1)
+   Schwarze Maske + Skyline-Übergänge: section-transition.css / .js
+═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   Instagram-Feed (z10)
+   ═══════════════════════════════════════════════════════════════
+   Drei Posts, direkt aneinander (gap: 0).
+   Jede .post__card hat festes aspect-ratio aus Frame-Teilen.
+   Head/Foot = PNG-Assets mit Instagram-UI; Media = freier Slot dazwischen.
+   Prozentuale Höhen der Slots = Anteil an Gesamt-Frame-Höhe (951 px).
+═══════════════════════════════════════════════════════════════ */
+.layer--posts {
+  left: var(--posts-left);  /* rechts mit 20 px Padding */
+  top:  1453px;
+  width:  var(--posts-w);
+  z-index: var(--z-posts);
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* keine Lücken – sonst schwarze Viereck6-Maske sichtbar */
+}
+
+.post__card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--post-frame-w) / var(--post-frame-h);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Oberer Frame-Teil: Profilzeile (HTML/CSS, ersetzt post-frame-head.png) */
+.post__head-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--post-head-h) / var(--post-frame-h) * 100%);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 12px;
+}
+
+.post__head-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.post__avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid #e8e8e8;
+}
+
+.post__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 25% center;
+}
+
+.post__username {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post__menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-left: 8px;
+}
+
+.post__menu span {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: #000;
+  border-radius: 50%;
+}
+
+/* Medien-Slot zwischen Head und Foot */
+.post__media {
+  position: absolute;
+  top: calc(var(--post-head-h) / var(--post-frame-h) * 100%);
+  left: 0;
+  width: 100%;
+  height: calc(var(--post-media-h) / var(--post-frame-h) * 100%);
+  overflow: hidden;
+}
+
+/* Unterer Frame-Teil: Aktionsleiste */
+.post__foot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--post-foot-h) / var(--post-frame-h) * 100%);
+  display: block;
+  object-fit: fill;
+}
+
+.post__media img,
+.post__media video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* Medien füllen den Slot, Überschuss wird beschnitten */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Übergangs-Titel auf schwarzer Fläche (z12 / z20)
+   ═══════════════════════════════════════════════════════════════
+   „Vom KI-Influencer“ – dunkler Text auf hellem Übergang
+   „zum Deepfake“       – heller Text auf schwarzer Viereck6-Fläche
+═══════════════════════════════════════════════════════════════ */
+/* Bleibt beim Scrollen mittig im Viewport stehen (instagram.js:
+   createOverlayPin), bis die dunkle Sektion von oben darüber schiebt –
+   z-index absichtlich UNTER --z-mega (5), damit sie den Titel verdeckt
+   und er danach nicht mehr auftaucht. */
+.layer--title-vom {
+  left: 141px;
+  top: calc(var(--ig-sec-anchor) + var(--ig-sec-shift) - var(--ig-sec-title-inset));
+  width:  auto;
+  font-family: var(--font-heading);
+  font-size: 135px; /* mit echten Font-Metriken (wellbutrin.ttf) berechnet: größtmögliche Größe, die noch ohne Umbruch in die Canvas-Breite passt */
+  font-weight: normal;
+  white-space: nowrap;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  z-index: 3;
+  transform: translate3d(0, 0, 0);
+}
+
+.layer--title-zum {
+  left: 141px;
+  top:  calc(5492px + var(--ig-sec-shift));
+  width:  1174px;
+  font-family: var(--font-heading);
+  font-size: 146px;
+  font-weight: normal;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text-inverse);
+  z-index: var(--z-df-txt);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WhiteViereck-Textkarten (z20)
+   ═══════════════════════════════════════════════════════════════
+   Weiße Pixel-Blobs mit schwarzem Fließtext darüber.
+   Text liegt absolut über dem Shape (.df-card__text mit inset: 0).
+═══════════════════════════════════════════════════════════════ */
+.layer--df-card {
+  position: absolute;
+  z-index: var(--z-df-txt);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Bleibt fix stehen, solange das zugehörige Deepfake-Bild durch sein
+   Cutout in der dunklen Maske scrollt (instagram.js: createCardSticky) */
+.layer--df-card.is-pinned {
+  will-change: transform;
+}
+
+.df-card__shape {
+  width: 100%;
+  height: 100%; /* greift nur, wenn der Layer selbst eine feste Höhe setzt (df-card-b) */
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.df-card__body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 18px 28px;
+  pointer-events: none;
+}
+
+/* WhiteViereck1/2 haben je eine eingekerbte Ecke (Verbindungseffekt) –
+   dort braucht der Text mehr Innenabstand, sonst wird er abgeschnitten. */
+.layer--df-card-t .df-card__body {
+  padding: 24px 28px 28px;
+  padding-right: calc(13.3% + 24px);
+} /* Kerbe unten rechts */
+.layer--df-card-b .df-card__body { padding-left:  26%; } /* Kerbe unten links – Fließtext eingerückt, aber weiter links als zuvor */
+
+/* Kerbe bei WhiteViereck2 sitzt nur unten links – oben ist der volle Rand
+   frei, daher darf die Überschrift viel weiter links stehen als der Text. */
+.layer--df-card-b .df-card__heading {
+  margin-left: calc(28px - 26%);
+  font-size: 34px;
+}
+
+.df-card__heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.df-card__text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--body);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.012em;
+  color: var(--color-text);
+}
+
+.layer--df-card-t { left: 74px;  top: calc(5816px + var(--ig-sec-shift)); width: 640px; height: 330px; } /* WhiteViereck1 – Höhe für längeren Fließtext */
+.layer--df-card-b { left: 759px; top: calc(6925px + var(--ig-sec-shift)); width: 670px; height: 370px; } /* WhiteViereck2 – Höhe für längeren Fließtext */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Hero (z25) – Seitenanfang
+   ═══════════════════════════════════════════════════════════════
+   Figma Frame 73 @ (158, 125): „Instagram“ + Untertitel
+═══════════════════════════════════════════════════════════════ */
+.layer--hero {
+  left: 158px;
+  top:  125px;
+  z-index: var(--z-hero);
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: 220px;
+  font-weight: normal;
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+}
+
+.hero__sub {
+  font-family: var(--font-body);
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.012em;
+  margin-top: 8px;
+  max-width: 641px;
+  color: var(--color-text);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Teaser-Frame (z15) – zwischen Hero und Instagram-Feed
+   ═══════════════════════════════════════════════════════════════
+   Figma 697:2278 – zentriert im Zwischenraum Hero ↔ Feed
+═══════════════════════════════════════════════════════════════ */
+.layer--teaser {
+  left: 0;
+  top:  var(--teaser-top);
+  width:  calc(var(--teaser-w) * 1px);
+  height: calc(var(--teaser-h) * 1px);
+  z-index: var(--z-teaser);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.teaser__frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.teaser__line {
+  font-family: var(--font-heading);
+  font-weight: normal;
+  line-height: 1.05;
+  letter-spacing: var(--title-tracking);
+  color: var(--color-text);
+  /* Einblenden beim Scrollen (ersetzt den Pixel-Aufbau) */
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.teaser__line--1 { font-size: 96px; margin-bottom: 8px; }
+.teaser__line--2 { font-size: 115px; }
+
+.layer--teaser.is-visible .teaser__line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.layer--teaser.is-visible .teaser__line--2 {
+  transition-delay: 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teaser__line {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Footer-Navigation – mittig unter sec-dark (z4), scrollt unten heraus
+═══════════════════════════════════════════════════════════════ */
+.layer--footer {
+  left: 50%;
+  width: var(--ig-footer-width);
+  /* Unter sec-dark versteckt (z4 < z5), ragt aus unterer Kante heraus */
+  top: calc(
+    var(--ig-sec-dark-anchor) + var(--ig-sec-shift) + var(--ig-sec-dark-h) - var(--ig-footer-underlap)
+  );
+  z-index: var(--z-footer-under);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 56px;
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform;
+
+  /* Kleinere Footer-Buttons (~70 % der Startseite) */
+  --ig-nav-height:     112px;
+  --ig-nav-label-size: 50px;
+  --ig-nav-inner-gap:  36px;
+  --ig-nav-arrow-size: 38px;
+}
+
+.layer--footer .fbtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--ig-nav-height);
+  text-decoration: none;
+  transition: filter 0.18s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layer--footer .fbtn:hover,
+.layer--footer .fbtn:focus-visible {
+  filter: brightness(1.06);
+  z-index: 2;
+}
+
+.layer--footer .fbtn__bg,
+.layer--footer .fbtn__glitch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.layer--footer .fbtn--ki .fbtn__bg path { fill: #F7730D; }
+
+.layer--footer .fbtn--ki     { color: #0E0E0E; }
+.layer--footer .fbtn--tiktok { color: #0E0E0E; }
+.layer--footer .fbtn--tinder { color: #FAFAFA; }
+
+.layer--footer .fbtn__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ig-nav-inner-gap);
+  padding: 0 24px;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.layer--footer .fbtn__label {
+  font-family: var(--font-body);
+  font-size: var(--ig-nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.layer--footer .fbtn__arrow {
+  width:  var(--ig-nav-arrow-size);
+  height: var(--ig-nav-arrow-size);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.layer--footer .fbtn__arrow--light { filter: invert(1); }
+
+.layer--footer .fbtn--tiktok .fbtn__glitch--cyan { transform: translate(-8.4px, -7px); }
+.layer--footer .fbtn--tiktok .fbtn__glitch--red  { transform: translate(5.6px, 7.7px); }
+.layer--footer .fbtn--tiktok .fbtn__bg--rect     { z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .layer--footer .fbtn {
+    transition: none;
+  }
+
+  .layer--footer .fbtn:hover,
+  .layer--footer .fbtn:focus-visible {
+    filter: none;
+  }
+}
+
+.fbtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--nav-height);
+}
+
+.fbtn--ki     { width: 1040px; color: #0E0E0E; }
+.fbtn--tiktok { width: 526px;  color: #0E0E0E; }
+.fbtn--tinder { width: 479px;  color: #FAFAFA; }
+
+/* Hintergrund-SVGs liegen hinter Label + Pfeil */
+.fbtn__bg, .fbtn__glitch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fbtn--ki .fbtn__bg path { fill: #F7730D; }
+
+.fbtn__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nav-inner-gap);
+  padding: 0 34px;
+}
+
+.fbtn__label {
+  font-family: var(--font-body);
+  font-size: var(--nav-label-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.011em;
+  white-space: nowrap;
+}
+
+.fbtn__arrow {
+  width:  var(--nav-arrow-size);
+  height: var(--nav-arrow-size);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.fbtn__arrow--light { filter: invert(1); }
+
+/* TikTok-Glitch-Effekt: versetzte Farb-Kopien hinter dem weißen Button */
+.fbtn--tiktok .fbtn__glitch--cyan { transform: translate(-12px, -10px); }
+.fbtn--tiktok .fbtn__glitch--red  { transform: translate(8px, 11px); }
+.fbtn--tiktok .fbtn__bg--rect     { z-index: 1; }

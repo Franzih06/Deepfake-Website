@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Traue deinen Augen nicht</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260710bz">
+  <link rel="stylesheet" href="pages/pixel-transition.css?v=20260707a">
+  <script src="pages/pixel-transition.js?v=20260707b"></script>
+</head>
+<body>
+
+  <p class="hero-caption">Alle Fotos und Videos sind KI-generiert</p>
+
+  <div class="scroll-viewport" id="scroll-viewport">
+    <main class="hero-canvas" id="hero-canvas" aria-label="Startseite">
+
+      <!-- Ebene 1: Headline (Hintergrund) -->
+      <h1 class="hero-title parallax-layer" data-parallax="title">Traue deinen Augen nicht</h1>
+
+      <!-- Ebene 2: Fotos -->
+      <div class="photo-layer" id="photo-layer" aria-hidden="true"></div>
+
+      <!-- Ebene 3: Navigation -->
+      <nav class="hero-nav" aria-label="Unterseiten">
+
+        <!-- KI – 1040 × 160 @ (653, 820); Hover = volle Karte (977 × 584) -->
+        <div class="nav-btn-wrap nav-btn-wrap--ki parallax-layer" data-parallax="nav">
+          <a class="nav-btn nav-btn--ki" href="pages/ki.html">
+            <span class="nav-btn__ki-frame">
+              <img class="nav-btn__ki-bg" src="assets/nav/ki-hover-card.svg" alt="" aria-hidden="true">
+              <span class="nav-btn__ki-title">KI Bilder und Deepfake</span>
+              <span class="nav-btn__ki-text">Deepfakes kommen in verschiedensten Formen. Was macht das mit der Gesellschaft und was kann mann dagegen tun?</span>
+              <span class="nav-btn__ki-cta">
+                <img class="nav-btn__ki-cta-bg" src="assets/nav/ki-hover-cta.svg" alt="" aria-hidden="true">
+                <span class="nav-btn__ki-cta-label">Zur Seite</span>
+              </span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Instagram – 598 × 160 @ (2800, 798); Hover = Karte (977 × 584) -->
+        <div class="nav-btn-wrap nav-btn-wrap--instagram parallax-layer" data-parallax="nav">
+          <a class="nav-btn nav-btn--instagram" href="pages/instagram.html">
+            <span class="nav-btn__ig-frame">
+              <span class="nav-btn__ig-collapsed">
+                <svg class="nav-btn__ig-bar" viewBox="0 0 598 160" aria-hidden="true">
+                  <defs>
+                    <radialGradient id="ig-bar-grad-a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(341.707 -252.063 408.518 567.91 -273.114 236.825)">
+                      <stop offset="0.134515" stop-color="#FE0081"/>
+                      <stop offset="0.283654" stop-color="#FFC100"/>
+                      <stop offset="0.619093" stop-color="#FE0081"/>
+                      <stop offset="1" stop-color="#9D26D4"/>
+                    </radialGradient>
+                    <radialGradient id="ig-bar-grad-b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-189.349 -596.19 966.243 -314.695 341.958 509.841)">
+                      <stop stop-color="#FFC100"/>
+                      <stop offset="0.358376" stop-color="#FE0187"/>
+                      <stop offset="0.639529" stop-color="#FE0081"/>
+                      <stop offset="1" stop-color="#9D26D4" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <path d="M598 124.889C598 144.28 582.28 160 562.889 160H35.1111C15.7198 160 0 144.28 0 124.889V35.1111C0 15.7198 15.7198 0 35.1111 0H562.889C582.28 0 598 15.7198 598 35.1111V124.889Z" fill="url(#ig-bar-grad-a)"/>
+                  <path d="M598 124.889C598 144.28 582.28 160 562.889 160H35.1111C15.7198 160 0 144.28 0 124.889V35.1111C0 15.7198 15.7198 0 35.1111 0H562.889C582.28 0 598 15.7198 598 35.1111V124.889Z" fill="url(#ig-bar-grad-b)" fill-opacity="0.71"/>
+                </svg>
+                <span class="nav-btn__ig-bar-inner">
+                  <span class="nav-btn__ig-bar-label">Instagram</span>
+                </span>
+              </span>
+              <img class="nav-btn__ig-bg" src="assets/nav/ig-hover-card.svg" alt="" aria-hidden="true">
+              <span class="nav-btn__ig-title">Instagram</span>
+              <span class="nav-btn__ig-text">Perfekte Haut, perfektes Licht, perfektes Leben. Auf Instagram ist längst nicht mehr klar, wer echt ist.</span>
+              <span class="nav-btn__ig-cta">
+                <img class="nav-btn__ig-cta-bg" src="assets/nav/ki-hover-cta.svg" alt="" aria-hidden="true">
+                <span class="nav-btn__ig-cta-label">Zur Seite</span>
+              </span>
+            </span>
+          </a>
+        </div>
+
+        <!-- TikTok – 526 × 160 @ (4162, 424) -->
+        <a class="nav-btn nav-btn--tiktok parallax-layer" data-parallax="nav" href="pages/tiktok.html">
+          <svg class="nav-btn__glitch nav-btn__glitch--cyan" viewBox="0 0 527 160" aria-hidden="true">
+            <rect width="527" height="160" rx="20" fill="#00F7EF"/>
+          </svg>
+          <svg class="nav-btn__glitch nav-btn__glitch--red" viewBox="0 0 527 160" aria-hidden="true">
+            <rect width="527" height="160" rx="20" fill="#FF004F"/>
+          </svg>
+          <svg class="nav-btn__bg nav-btn__bg--rect" viewBox="0 0 527 160" aria-hidden="true">
+            <rect width="527" height="160" rx="20" fill="#FAFAFA"/>
+          </svg>
+          <span class="nav-btn__inner">
+            <span class="nav-btn__label">TikTok</span>
+          </span>
+        </a>
+
+        <!-- Tinder – 479 × 160 @ (5878, 863) -->
+        <a class="nav-btn nav-btn--tinder parallax-layer" data-parallax="nav" href="pages/tinder.html">
+          <svg class="nav-btn__bg nav-btn__bg--rect" viewBox="0 0 479 160" aria-hidden="true">
+            <rect width="479" height="160" rx="20" fill="#EE2C6B"/>
+          </svg>
+          <span class="nav-btn__inner">
+            <span class="nav-btn__label">Tinder</span>
+          </span>
+        </a>
+
+      </nav>
+    </main>
+  </div>
+
+  <script src="script.js?v=20260710bv"></script>
+</body>
+</html>

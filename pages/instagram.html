@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+  Instagram-Unterseite „Instagram 2“
+  ─────────────────────────────────
+  Figma-Quelle: Frame 690:1376 (1440 × 11525 px)
+
+  Aufbau:
+  1. Fixe UI außerhalb des Canvas (Zurück, Progressbar, Burger-Menü) – skaliert mit Viewport
+  2. .viewport / .canvas – absolutes Layout, skaliert von oben links (transform: scale)
+  3. Layer in Z-Index-Reihenfolge (siehe instagram.css --z-* Variablen)
+
+  Ebenen-Hierarchie (unten → oben):
+    z1   Deepfake-Screenshots (Parallax, hinter Maske)
+    z4   Info-FAQ Akkordeon (Pixel-Blob)
+    z5   Pixel-Skyline Übergang + dunkle Content-Maske
+    z8   Text auf schwarzem Blob
+    z10  Instagram-Feed (3 Posts)
+    z12  Übergang „Vom KI-Influencer“
+    z15  Teaser „Dein Lieblings-Influencer“ (Pixel-Aufbau)
+    z25  Hero
+    z30  Footer-Navigation
+    z100 Fixe UI
+-->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deepfake – Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="page-scale.css?v=20260710cb">
+  <link rel="stylesheet" href="instagram.css?v=20260710cb">
+  <link rel="stylesheet" href="info-faq.css?v=20260710r">
+  <link rel="stylesheet" href="section-transition.css?v=20260707a">
+  <link rel="stylesheet" href="burger-menu.css?v=20260707k">
+  <link rel="stylesheet" href="pixel-transition.css?v=20260707a">
+  <script src="pixel-transition.js?v=20260707b"></script>
+</head>
+<body>
+
+  <!-- ═══ Fixe UI (liegt über dem skalierten Canvas) ═══════════ -->
+
+  <!-- Zurück zur Startseite – Figma @ (24, 62), schwarzer Button -->
+  <a href="../index.html" class="ui-back" aria-label="Zurück">
+    <img class="ui-back__arrow" src="../assets/nav/arrow-button.png" alt="" aria-hidden="true">
+  </a>
+
+
+  <!-- SVG-Gooey-Filter (außerhalb Canvas – sonst kein Gooey unter transform: scale) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="section-goo" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 20 -10" result="goo"/>
+        <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ═══ Skalierter Seiten-Canvas (Figma-Koordinaten 1440 × 11525) ═══ -->
+  <div class="viewport">
+    <main class="canvas" aria-label="Instagram 2 Unterseite">
+
+      <!-- ── Deepfake-Sektion (unterer Seitenbereich) ──────────── -->
+      <!-- df-post: eigene Pixel-Maske. df-reel: eigene Layer ÜBER sec-dark
+           (links bei Sexualisierung), nicht durch contentHole. -->
+      <img class="layer layer--df-post" src="../assets/instagram/deepfake-post.png" alt="Deepfake Instagram Post">
+      <video class="layer layer--df-reel" src="../assets/instagram/deepfake-reel.mp4" autoplay muted loop playsinline preload="auto" aria-label="Deepfake Instagram Reel"></video>
+
+      <!-- Pixel-Skyline: Übergang hell → dunkel -->
+      <div class="layer sec-trans sec-trans--top" data-sec-transition data-config='{"topColor":"#f9f9f9","darkColor":"#0E0E0E","holes":[[2,1],[4,0],[6,2],[9,1],[12,0]],"floats":[[1,2],[11,2],[14,3]],"holeOffset":0}' aria-hidden="true">
+        <div class="sec-trans__sky"></div>
+        <div class="sec-trans__holes"></div>
+      </div>
+
+      <!-- Dunkle Sektion – durchgehend schwarz; Reel-Video liegt als Layer darüber -->
+      <div class="layer sec-dark" data-sec-transition data-config='{"darkColor":"#0E0E0E","contentHoles":[]}' aria-hidden="true">
+        <div class="sec-dark__fill"></div>
+        <div class="sec-dark__holes"></div>
+      </div>
+
+      <!-- Pixel-Skyline: Übergang dunkel → hell (Footer) – gleiche Pixel wie oben, gespiegelt -->
+      <div class="layer sec-trans sec-trans--bottom" data-sec-transition data-config='{"topColor":"#f9f9f9","darkColor":"#0E0E0E","reverse":true,"holes":[[2,1],[9,1]],"floats":[[1,5],[11,5],[14,5]],"holeOffset":0}' aria-hidden="true">
+        <div class="sec-trans__sky"></div>
+        <div class="sec-trans__holes"></div>
+      </div>
+
+      <!-- ── Info-Bereich (mittlerer Seitenbereich) ────────────── -->
+      <!-- Pixel-Akkordeon links; Feed scrollt rechts daran vorbei -->
+      <div class="layer layer--info-blob" id="section-info">
+        <div class="info-faq" id="info-faq">
+          <div class="info-faq__move">
+          <div class="info-faq__shapes" aria-hidden="true">
+            <div class="info-faq__shape-fill"></div>
+          </div>
+
+          <div class="info-faq__content">
+            <div class="info-faq__item">
+              <button class="info-faq__q" type="button">
+                <span class="info-faq__q-text">Was sind KI-Influencer?</span>
+                <img class="info-faq__icon" src="../assets/icons/dropdown.svg" alt="" width="36" height="36">
+              </button>
+              <div class="info-faq__a"><div class="info-faq__a-inner">
+                <p>Du scrollst durch perfekte Instagram-Profile – aber die Person existiert nicht. KI-Influencer werden am Computer erschaffen, und nicht alle Accounts machen das deutlich.</p>
+              </div></div>
+            </div>
+
+            <div class="info-faq__item">
+              <button class="info-faq__q" type="button">
+                <span class="info-faq__q-text">Warum gibt es KI-Influencer?</span>
+                <img class="info-faq__icon" src="../assets/icons/dropdown.svg" alt="" width="36" height="36">
+              </button>
+              <div class="info-faq__a"><div class="info-faq__a-inner">
+                <p>Weil sie sich nie krankmelden, nie altern und rund um die Uhr Werbung machen können. Marken und Agenturen steuern jedes Detail – Aussehen, Meinung und Veröffentlichungszeiten.</p>
+              </div></div>
+            </div>
+
+            <div class="info-faq__item">
+              <button class="info-faq__q" type="button">
+                <span class="info-faq__q-text">Warum ist das ein Problem?</span>
+                <img class="info-faq__icon" src="../assets/icons/dropdown.svg" alt="" width="36" height="36">
+              </button>
+              <div class="info-faq__a"><div class="info-faq__a-inner">
+                <p>Unrealistische Körper- und Lifestyle-Bilder wirken besonders stark, wenn nicht erkennbar ist, dass sie künstlich sind. Werbung verschwimmt mit echtem Leben.</p>
+              </div></div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!--
+        Instagram-Feed – drei Posts in einer Spalte
+        ─────────────────────────────────────────
+        Jeder Post = 3 Teile (Head + Media + Foot), damit Medien unterschiedliche
+        Höhen haben können ohne das UI zu verzerren:
+          post__head-ui        → Avatar, Username, Menü (113 px, HTML/CSS)
+          post__media          → Bild oder Video (746 px Slot)
+          post-frame-foot.png  → Icons, Likes, Kommentare (117 px)
+        Gesamthöhe pro Post: 976 px (siehe --post-frame-h in CSS)
+      -->
+      <div class="layer layer--posts" id="section-feed">
+
+        <article class="post">
+          <div class="post__card">
+            <div class="post__head-ui">
+              <div class="post__head-left">
+                <div class="post__avatar">
+                  <img src="../assets/media/05.png" alt="">
+                </div>
+                <span class="post__username">Künstliche Intelligenz</span>
+              </div>
+              <div class="post__menu">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="post__media">
+              <img src="../assets/media/05.png" alt="KI-generiertes Urlaubsfoto">
+            </div>
+            <img class="post__foot" src="../assets/instagram/post-frame-foot.png" alt="" width="746" height="117">
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post__card">
+            <div class="post__head-ui">
+              <div class="post__head-left">
+                <div class="post__avatar">
+                  <img src="../assets/media/05.png" alt="">
+                </div>
+                <span class="post__username">Künstliche Intelligenz</span>
+              </div>
+              <div class="post__menu">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="post__media">
+              <video src="../assets/media/04.mp4" autoplay muted loop playsinline></video>
+            </div>
+            <img class="post__foot" src="../assets/instagram/post-frame-foot.png" alt="" width="746" height="117">
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post__card">
+            <div class="post__head-ui">
+              <div class="post__head-left">
+                <div class="post__avatar">
+                  <img src="../assets/media/05.png" alt="">
+                </div>
+                <span class="post__username">Künstliche Intelligenz</span>
+              </div>
+              <div class="post__menu">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="post__media">
+              <img src="../assets/media/ki-cafe-latte.png" alt="KI-generiertes Café-Foto">
+            </div>
+            <img class="post__foot" src="../assets/instagram/post-frame-foot.png" alt="" width="746" height="117">
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Übergangstitel auf der schwarzen Viereck6-Fläche -->
+      <h2 class="layer layer--title-vom" id="section-deepfake">Vom KI&#8209;Influencer</h2>
+      <h2 class="layer layer--title-zum">zum Deepfake</h2>
+
+      <!-- Textkarten auf weißen Pixel-Blobs (schwarzer Text auf weiß) -->
+      <div class="layer layer--df-card layer--df-card-t">
+        <img class="df-card__shape" src="../assets/pixel/WhiteViereck1.png" alt="" width="587" height="230">
+        <div class="df-card__body">
+          <h3 class="df-card__heading">KI-Promis</h3>
+          <p class="df-card__text">Betrüger nutzen die Gesichter von Prominenten oder ahnungslosen Nutzerinnen und Nutzern, um Vertrauen zu wecken. Über gefälschte Profile verbreiten sie etwa Falschmeldungen oder gaukeln Anlegern dubiose Investments vor.</p>
+        </div>
+      </div>
+      <div class="layer layer--df-card layer--df-card-b">
+        <img class="df-card__shape" src="../assets/pixel/WhiteViereck2.png" alt="" width="608" height="228">
+        <div class="df-card__body">
+          <h3 class="df-card__heading">Sexualisierung</h3>
+          <p class="df-card__text">Betroffen sind nicht nur Prominente. Es trifft Mitschülerinnen, Kolleginnen, ehemalige Partnerinnen. Oft aus Rache, oft einfach, weil es möglich ist.</p>
+        </div>
+      </div>
+
+      <!-- ── Hero (oberer Seitenbereich) ───────────────────────── -->
+      <header class="layer layer--hero" id="section-hero">
+        <h1 class="hero__title">Instagram</h1>
+        <p class="hero__sub">Wem folgst du eigentlich?</p>
+      </header>
+
+      <!-- Teaser zwischen Hero und Feed – Text blendet beim Scrollen ein (instagram.js) -->
+      <section class="layer layer--teaser" id="section-teaser" aria-label="Dein Lieblings-Influencer">
+        <div class="teaser__frame">
+          <p class="teaser__line teaser__line--1">Dein Lieblings-Influencer</p>
+          <p class="teaser__line teaser__line--2">Ein KI-Influencer?</p>
+        </div>
+      </section>
+
+      <!-- Footer – Navigation zu den anderen Unterseiten (ohne Instagram-Button) -->
+      <nav class="layer layer--footer" id="section-footer" aria-label="Weitere Themen">
+        <a class="fbtn fbtn--ki" href="ki.html">
+          <svg class="fbtn__bg" viewBox="0 0 1041 160" aria-hidden="true"><path d="M1040 24C1040 24.0701 1040.06 24.127 1040.13 24.127C1040.2 24.127 1040.25 24.1838 1040.25 24.2539V130.667C1040.25 130.737 1040.2 130.794 1040.13 130.794C1040.06 130.794 1040 130.851 1040 130.921V145.397C1040 153.462 1033.46 160 1025.4 160H20C8.95432 160 0 151.046 0 140V20C0 8.95431 8.95431 0 20 0H1027.94C1034.6 0 1040 5.401 1040 12.0635V24Z"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">KI Bilder und Deepfake</span></span>
+        </a>
+        <a class="fbtn fbtn--tiktok" href="tiktok.html">
+          <svg class="fbtn__glitch fbtn__glitch--cyan" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#00F7EF"/></svg>
+          <svg class="fbtn__glitch fbtn__glitch--red" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FF004F"/></svg>
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 527 160" aria-hidden="true"><rect width="527" height="160" rx="20" fill="#FAFAFA"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">TikTok</span></span>
+        </a>
+        <a class="fbtn fbtn--tinder" href="tinder.html">
+          <svg class="fbtn__bg fbtn__bg--rect" viewBox="0 0 479 160" aria-hidden="true"><rect width="479" height="160" rx="20" fill="#EE2C6B"/></svg>
+          <span class="fbtn__inner"><span class="fbtn__label">Tinder</span></span>
+        </a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="page-scale.js?v=20260710cb"></script>
+  <script src="burger-menu.js?v=20260707g"></script>
+  <script src="section-transition.js?v=20260707c"></script>
+  <script src="instagram.js?v=20260710cb"></script>
+</body>
+</html>
