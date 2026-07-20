@@ -253,12 +253,12 @@ function onWheel(event) {
 
 
 function observePhotos() {
+  // Videos nur abspielen, wenn ihre Kachel im Blick ist (spart CPU/Akku).
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         const video = entry.target.querySelector('video');
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
           video?.play().catch(() => {});
         } else {
           video?.pause();
@@ -269,8 +269,12 @@ function observePhotos() {
   );
 
   photoLayer.querySelectorAll('.photo-tile').forEach(tile => {
+    // Kacheln sanft einblenden – garantiert sichtbar, unabhängig vom Observer.
     tile.style.opacity = '0';
     tile.style.transition = 'opacity 0.5s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      tile.style.opacity = '1';
+    }));
     observer.observe(tile);
   });
 }
