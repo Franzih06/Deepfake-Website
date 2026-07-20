@@ -12,7 +12,7 @@
 .menu-wrap {
   position: fixed;
   top: 0;
-  right: var(--page-offset-x, 0px);
+  right: 0;
   width: 480px;
   height: 560px;
   overflow: visible;

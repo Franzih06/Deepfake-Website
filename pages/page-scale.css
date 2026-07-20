@@ -18,9 +18,11 @@
   left: calc(-1 * var(--page-offset-x) / var(--page-scale));
 }
 
-/* Fixe Controls am skalierten Canvas-Rand ausrichten */
+/* Fixe Controls immer am echten Viewport-Rand ausrichten (nicht am
+   zentrierten Canvas), damit sie bei breiten Fenstern nicht Richtung
+   Mitte wandern, sondern links/rechts am Bildschirmrand bleiben. */
 .ui-back {
-  left: calc(var(--page-offset-x) + 24px * var(--page-scale));
+  left: calc(24px * var(--page-scale));
   top:  calc(24px * var(--page-scale));
   width:  calc(40px * var(--page-scale));
   height: calc(40px * var(--page-scale));
